@@ -4,6 +4,20 @@
   
     
     <entry>
+      <title><![CDATA[文章摘要2]]></title>
+      <url>http://hweih.github.io/2016/06/28/%E6%96%87%E7%AB%A0%E6%91%98%E8%A6%812/</url>
+      <content type="html"><![CDATA[<p>&lt;这里展示的是文章的详细内容&gt;</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[文章摘要1]]></title>
+      <url>http://hweih.github.io/2016/06/28/%E6%96%87%E7%AB%A0%E6%91%98%E8%A6%811/</url>
+      <content type="html"><![CDATA[<p>&lt;这是首页显示的摘要&gt;<br>+<!-- moren --><br>&lt;这里展示的是文章的详细内容&gt;</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[hello]]></title>
       <url>http://hweih.github.io/2016/06/26/hello/</url>
       <content type="html"><![CDATA[<p>摘要：</p>
