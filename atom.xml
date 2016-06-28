@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hweih.github.io/"/>
-  <updated>2016-06-28T06:11:19.287Z</updated>
+  <updated>2016-06-28T06:16:14.450Z</updated>
   <id>http://hweih.github.io/</id>
   
   <author>
@@ -20,15 +20,14 @@
     <link href="http://hweih.github.io/2016/06/28/%E6%96%87%E7%AB%A0%E6%91%98%E8%A6%812/"/>
     <id>http://hweih.github.io/2016/06/28/文章摘要2/</id>
     <published>2016-06-28T06:09:39.000Z</published>
-    <updated>2016-06-28T06:11:19.287Z</updated>
+    <updated>2016-06-28T06:16:14.450Z</updated>
     
     <content type="html">&lt;p&gt;&amp;lt;这里展示的是文章的详细内容&amp;gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
     
-      &lt;p&gt;&amp;lt;这里展示的是文章的详细内容&amp;gt;&lt;/p&gt;
-
+      欢迎来到Hexo世界！
     
     </summary>
     
@@ -42,15 +41,14 @@
     <link href="http://hweih.github.io/2016/06/28/%E6%96%87%E7%AB%A0%E6%91%98%E8%A6%811/"/>
     <id>http://hweih.github.io/2016/06/28/文章摘要1/</id>
     <published>2016-06-28T06:07:41.000Z</published>
-    <updated>2016-06-28T06:10:07.871Z</updated>
+    <updated>2016-06-28T06:20:27.401Z</updated>
     
-    <content type="html">&lt;p&gt;&amp;lt;这是首页显示的摘要&amp;gt;&lt;br&gt;+&lt;!-- moren --&gt;&lt;br&gt;&amp;lt;这里展示的是文章的详细内容&amp;gt;&lt;/p&gt;
+    <content type="html">&lt;p&gt;&amp;lt;这是首页显示的摘要&amp;gt;&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;br&gt;&amp;lt;这里展示的是文章的详细内容&amp;gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
     
-      &lt;p&gt;&amp;lt;这是首页显示的摘要&amp;gt;&lt;br&gt;+&lt;!-- moren --&gt;&lt;br&gt;&amp;lt;这里展示的是文章的详细内容&amp;gt;&lt;/p&gt;
-
+      &lt;p&gt;&amp;lt;这是首页显示的摘要&amp;gt;&lt;br&gt;
     
     </summary>
     
