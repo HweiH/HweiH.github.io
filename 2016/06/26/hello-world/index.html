@@ -410,23 +410,11 @@ Quick">
     <script>
         var duoshuoQuery = {short_name:"well"};
         (function() {
-            /* 获取网址 */
-            var getRootPath = function() {
-                //获取当前网址，如： http://localhost:8083/uimcardprj/share/meun.jsp
-                var curWwwPath = window.document.location.href;
-                //获取主机地址之后的目录，如： uimcardprj/share/meun.jsp
-                var pathName = window.document.location.pathname;
-                var pos = curWwwPath.indexOf(pathName);
-                //获取主机地址，如： http://localhost:8083
-                return curWwwPath.substring(0, pos);
-            };
-            var webRoot = getRootPath();
-
             var ds = document.createElement('script');
             ds.type = 'text/javascript';
             ds.async = true;
             /* 下面是我自己的 embed.js 链接，请改为你自己的地址 */
-            ds.src = webRoot + '/js/embed.js';
+            ds.src = 'http://hweih.github.io/js/embed.js';
             ds.charset = 'UTF-8';
             (document.getElementsByTagName('head')[0]
              || document.getElementsByTagName('body')[0]).appendChild(ds);
