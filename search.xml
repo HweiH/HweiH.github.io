@@ -111,9 +111,15 @@
     
     <entry>
       <title></title>
+      <url>http://hweih.github.io/about/index.html</url>
+      <content type="html"><![CDATA[<p>##…待定….</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
       <url>http://hweih.github.io/tags/index.html</url>
-      <content type="html"><![CDATA[<h2 id="分类-amp-标签"><a href="#分类-amp-标签" class="headerlink" title="分类 &amp; 标签"></a>分类 &amp; 标签</h2><p>###<strong><code>术业专攻</code></strong> <strong><code>术业专攻</code></strong> <strong><code>触类旁通</code></strong></p>
-<p>…待定…</p>
+      <content type="html"><![CDATA[<p>##…待定…</p>
 ]]></content>
     </entry>
     

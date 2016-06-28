@@ -7,8 +7,15 @@
     </url>
     
     <url>
+        <loc>http://hweih.github.io/about/index.html</loc>
+        <lastmod>2016-06-28T09:32:08.253Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
         <loc>http://hweih.github.io/tags/index.html</loc>
-        <lastmod>2016-06-28T09:25:59.994Z</lastmod>
+        <lastmod>2016-06-28T09:31:31.236Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
