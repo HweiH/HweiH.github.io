@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hweih.github.io/"/>
-  <updated>2016-06-28T06:16:14.450Z</updated>
+  <updated>2016-06-28T16:18:14.221Z</updated>
   <id>http://hweih.github.io/</id>
   
   <author>
@@ -14,6 +14,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hexo采用yelee主题的建站手册</title>
+    <link href="http://hweih.github.io/2016/06/28/%E5%B8%AE%E5%8A%A9%E6%89%8B%E5%86%8C/"/>
+    <id>http://hweih.github.io/2016/06/28/帮助手册/</id>
+    <published>2016-06-28T15:56:43.000Z</published>
+    <updated>2016-06-28T16:18:14.221Z</updated>
+    
+    <content type="html">&lt;p&gt;yelee主题帮助手册&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;GitHub仓库展示小挂件&quot;&gt;&lt;a href=&quot;#GitHub仓库展示小挂件&quot; class=&quot;headerlink&quot; title=&quot;GitHub仓库展示小挂件&quot;&gt;&lt;/a&gt;GitHub仓库展示小挂件&lt;/h3&gt;&lt;div class=&quot;github-widget&quot; data-repo=&quot;MOxFIVE/hexo-theme-yelee&quot;&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;以上只是例子，具体使用可以参考 &lt;a href=&quot;http://moxfive.coding.me/yelee/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Yelee主题使用说明&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;个人的GitHub示例项目&quot;&gt;&lt;a href=&quot;#个人的GitHub示例项目&quot; class=&quot;headerlink&quot; title=&quot;个人的GitHub示例项目&quot;&gt;&lt;/a&gt;个人的GitHub示例项目&lt;/h3&gt;&lt;div class=&quot;github-widget&quot; data-repo=&quot;HweiH/wellrecord&quot;&gt;&lt;/div&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;yelee主题帮助手册&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="建站手册" scheme="http://hweih.github.io/tags/%E5%BB%BA%E7%AB%99%E6%89%8B%E5%86%8C/"/>
+    
+  </entry>
   
   <entry>
     <title>文章摘要2</title>

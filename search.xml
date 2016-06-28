@@ -4,6 +4,18 @@
   
     
     <entry>
+      <title><![CDATA[Hexo采用yelee主题的建站手册]]></title>
+      <url>http://hweih.github.io/2016/06/28/%E5%B8%AE%E5%8A%A9%E6%89%8B%E5%86%8C/</url>
+      <content type="html"><![CDATA[<p>yelee主题帮助手册<br><a id="more"></a></p>
+<h3 id="GitHub仓库展示小挂件"><a href="#GitHub仓库展示小挂件" class="headerlink" title="GitHub仓库展示小挂件"></a>GitHub仓库展示小挂件</h3><div class="github-widget" data-repo="MOxFIVE/hexo-theme-yelee"></div>
+
+<blockquote>
+<p>以上只是例子，具体使用可以参考 <a href="http://moxfive.coding.me/yelee/" target="_blank" rel="external">Yelee主题使用说明</a></p>
+</blockquote>
+<h3 id="个人的GitHub示例项目"><a href="#个人的GitHub示例项目" class="headerlink" title="个人的GitHub示例项目"></a>个人的GitHub示例项目</h3><div class="github-widget" data-repo="HweiH/wellrecord"></div>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[文章摘要2]]></title>
       <url>http://hweih.github.io/2016/06/28/%E6%96%87%E7%AB%A0%E6%91%98%E8%A6%812/</url>
       <content type="html"><![CDATA[<p>&lt;这里展示的是文章的详细内容&gt;</p>

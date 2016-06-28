@@ -546,6 +546,9 @@ a {
   #container .ua {
     display: none !important;
   }
+  #container .github-text {
+    display: none;
+  }
   #container .copyright {
     font-size: 16px;
   }
@@ -1091,6 +1094,24 @@ color
 .post-list li:hover a {
   color: #88acdb;
 }
+.article-entry .github-widget h3::after {
+  content: none;
+}
+.article-entry .github-widget .github-box {
+  font-size: 0.8125rem;
+}
+.article-entry .github-widget .github-box .github-box-title h3 {
+  font-size: 1rem;
+}
+.article-entry .github-widget .github-box .github-box-title .github-stats {
+  font-size: 0.6875rem;
+}
+.article-entry .github-widget .github-box .updated {
+  font-size: 0.6875rem;
+}
+.article-entry .github-widget .github-box .download {
+  font-size: 0.75rem;
+}
 .ui-tooltip {
   padding: 6px;
   max-width: 30em;
@@ -1401,6 +1422,9 @@ body .ui-tooltip {
   box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
   border-left: 5px solid rgba(112,134,142,0.85);
   background: rgba(255,255,255,0.7);
+  border-left: 5px solid rgba(0,153,100,0.62);
+  padding: 10.5px 21px;
+  background: none;
 }
 .article-entry blockquote p {
   margin: 0.4em auto;
