@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hweih.github.io/"/>
-  <updated>2016-06-29T13:29:05.523Z</updated>
+  <updated>2016-06-29T13:32:37.831Z</updated>
   <id>http://hweih.github.io/</id>
   
   <author>
@@ -20,35 +20,34 @@
     <link href="http://hweih.github.io/2016/06/29/%E4%BD%BF%E7%94%A8Hexo%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%9A%84Summary/"/>
     <id>http://hweih.github.io/2016/06/29/使用Hexo框架搭建个人博客的Summary/</id>
     <published>2016-06-29T12:49:48.000Z</published>
-    <updated>2016-06-29T13:29:05.523Z</updated>
+    <updated>2016-06-29T13:32:37.831Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;工作之余，出于对技术的爱好，也想养成编写文档的好习惯，遂腾出数天的时间来研究和捣鼓，终得“偿”所愿。念及学习之过程，顿感混乱之思绪。欲清理，故拙笔之一二，以备参考…&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;##步骤&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;###安装Git &lt;a href=&quot;http://baike.baidu.com/link?url=q2K7vqCXq55cwR_wFr0Q65PprJbOdNGA7vuKbIe97lgcPctZFUN603xGb6Ilo5C8JVN9ifdsaNaHBakeEb3CrRemVFBuP-e_q4vkGVOANpK&quot; title=&quot;Git介绍&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;步骤&quot;&gt;&lt;a href=&quot;#步骤&quot; class=&quot;headerlink&quot; title=&quot;步骤&quot;&gt;&lt;/a&gt;步骤&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;安装Git &lt;a href=&quot;http://baike.baidu.com/link?url=q2K7vqCXq55cwR_wFr0Q65PprJbOdNGA7vuKbIe97lgcPctZFUN603xGb6Ilo5C8JVN9ifdsaNaHBakeEb3CrRemVFBuP-e_q4vkGVOANpK&quot; title=&quot;Git介绍&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt; 使用 ./tools/Git/ 目录中的 Git-2.6.3-64-bit.exe 软件安装配置好Git，具体参考：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://jingyan.baidu.com/article/90895e0fb3495f64ed6b0b50.html&quot; title=&quot;如何在windows下安装GIT&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;如何在windows下安装GIT&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.jb51.net/article/55438.htm&quot; title=&quot;Windows系统下Git安装图解&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Windows系统下Git安装图解&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;###安装Node.js &lt;a href=&quot;http://baike.baidu.com/link?url=dEE65i0ySZgY1l98IqotYwHstkQR61z-wJICadvqMl-8DFXhv_VuVUq_95VmAbV3JESZtutlhdYoYbotKbjg6a&quot; title=&quot;Node.js&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;安装Node.js &lt;a href=&quot;http://baike.baidu.com/link?url=dEE65i0ySZgY1l98IqotYwHstkQR61z-wJICadvqMl-8DFXhv_VuVUq_95VmAbV3JESZtutlhdYoYbotKbjg6a&quot; title=&quot;Node.js&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt; 使用 ./tools/Nodejs/ 目录中的 node-v4.4.6-x64.msi 软件安装配置好Node，具体参考：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://nodejs.org/dist/v4.4.6/docs/api/&quot; title=&quot;nodejs-v4.4.6-api&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;nodejs-v4.4.6-api&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;./tools/Nodejs/nodejs-v4.4.6-api/all.html&quot; title=&quot;参考本地开发手册&quot;&gt;参考本地开发手册&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;###申请GitHub在线账号 &lt;a href=&quot;http://baike.baidu.com/link?url=B4WsVB08In3DAAbSPEKIOEiKfz-LrIJo_g6MZavIp4aBc5Xbj0-fig70Y8iQI8VhI-jy8ppvRWmQvzT8zcm7Fa&quot; title=&quot;申请GitHub在线账号&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;申请GitHub在线账号 &lt;a href=&quot;http://baike.baidu.com/link?url=B4WsVB08In3DAAbSPEKIOEiKfz-LrIJo_g6MZavIp4aBc5Xbj0-fig70Y8iQI8VhI-jy8ppvRWmQvzT8zcm7Fa&quot; title=&quot;申请GitHub在线账号&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt; &lt;a href=&quot;http://github.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt;用于托管博客源码以及发布博客网站，我们也可以使用&lt;a href=&quot;http://coding.net/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Coding&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;PS：可以使用&lt;a href=&quot;http://www.cnblogs.com/zhcncn/p/3731707.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HTTPS&lt;/a&gt;协议，但最好使用&lt;a href=&quot;http://blog.csdn.net/keyboardota/article/details/7603630&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SSH&lt;/a&gt;协议，免去每次从GitHub库中同步资源时需要输入账号密码的过程&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;###安装Hexo &lt;a href=&quot;http://jingyan.baidu.com/article/a378c96093ef51b328283026.html&quot; title=&quot;安装Hexo&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;安装Hexo &lt;a href=&quot;http://jingyan.baidu.com/article/a378c96093ef51b328283026.html&quot; title=&quot;安装Hexo&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;使用 &lt;code&gt;npm&lt;/code&gt; 命令，如果有被“墙”的情况，请使用淘宝的NPM镜像工具：&lt;code&gt;npm install -g cnpm --registry=https://registry.npm.taobao.org&lt;/code&gt;  将 &lt;code&gt;npm&lt;/code&gt; 命令替换成 &lt;code&gt;cnpm&lt;/code&gt; 使用&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -61,7 +60,7 @@ hexo server -g            // 生成博客静态页并启动服务，http://local
 &lt;p&gt;PS: 推荐安装Hexo的Git插件：&lt;a href=&quot;http://github.com/hexojs/hexo-deployer-git&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo-deployer-git&lt;/a&gt;，&lt;code&gt;npm install hexo-deployer-git --save&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;###安装Hexo相关插件 &lt;a href=&quot;http://hexo.io/plugins/&quot; title=&quot;安装Hexo相关插件&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;安装Hexo相关插件 &lt;a href=&quot;http://hexo.io/plugins/&quot; title=&quot;安装Hexo相关插件&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt; 这里给出一个&lt;em&gt;package.json&lt;/em&gt;文件，内容如下：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;{
   &amp;quot;name&amp;quot;: &amp;quot;hexo-site&amp;quot;,
@@ -97,7 +96,7 @@ hexo server -g            // 生成博客静态页并启动服务，http://local
 &lt;p&gt;&lt;strong&gt;注意：能够快速搭建的前提是安装了 node.js、hexo-cli，如果不清楚，请参考&lt;em&gt;[2. 安装Node.js、4. 安装Hexo]&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;###Hexo个性化：安装 &lt;a href=&quot;http://github.com/MOxFIVE/hexo-theme-yelee&quot; title=&quot;yelee&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;yelee&lt;/a&gt; 主题 &lt;a href=&quot;http://hexo.io/themes/&quot; title=&quot;Hexo个性化：安装yelee主题&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Hexo个性化：安装 &lt;a href=&quot;http://github.com/MOxFIVE/hexo-theme-yelee&quot; title=&quot;yelee&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;yelee&lt;/a&gt; 主题 &lt;a href=&quot;http://hexo.io/themes/&quot; title=&quot;Hexo个性化：安装yelee主题&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;yelee主题&lt;a href=&quot;http://moxfive.xyz/&quot; title=&quot;yelee主题预览&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;预览&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;yelee主题&lt;a href=&quot;http://github.com/MOxFIVE/hexo-theme-yelee&quot; title=&quot;yelee主题安装&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安装&lt;/a&gt;&lt;/p&gt;
@@ -118,7 +117,7 @@ hexo server -g    // 生成静态博客页面并打开服务器，访问 http://
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;###参考资料&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;参考资料&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://ibruce.info/2013/11/22/hexo-your-blog/&quot; title=&quot;搭建你的Hexo&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://ibruce.info/2013/11/22/hexo-your-blog/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/jzooo/article/details/46781805&quot; title=&quot;零基础免费搭建个人博客-hexo+github&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.csdn.net/jzooo/article/details/46781805&lt;/a&gt;&lt;/li&gt;
