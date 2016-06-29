@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hweih.github.io/"/>
-  <updated>2016-06-29T13:13:36.915Z</updated>
+  <updated>2016-06-29T13:29:05.523Z</updated>
   <id>http://hweih.github.io/</id>
   
   <author>
@@ -20,100 +20,118 @@
     <link href="http://hweih.github.io/2016/06/29/%E4%BD%BF%E7%94%A8Hexo%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%9A%84Summary/"/>
     <id>http://hweih.github.io/2016/06/29/使用Hexo框架搭建个人博客的Summary/</id>
     <published>2016-06-29T12:49:48.000Z</published>
-    <updated>2016-06-29T13:13:36.915Z</updated>
+    <updated>2016-06-29T13:29:05.523Z</updated>
     
     <content type="html">&lt;blockquote&gt;
-&lt;p&gt;工作之余，出于对技术的爱好，也想养成编写文档的好习惯，遂腾出数天的时间来研究和捣鼓，终得“偿”所愿。念及学习之过程，顿感混乱之思绪。欲清理，故拙笔之一二，以备参考…&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;1-安装Git&quot;&gt;&lt;a href=&quot;#1-安装Git&quot; class=&quot;headerlink&quot; title=&quot;1. 安装Git ?&quot;&gt;&lt;/a&gt;1. 安装Git &lt;a href=&quot;http://baike.baidu.com/link?url=q2K7vqCXq55cwR_wFr0Q65PprJbOdNGA7vuKbIe97lgcPctZFUN603xGb6Ilo5C8JVN9ifdsaNaHBakeEb3CrRemVFBuP-e_q4vkGVOANpK&quot; title=&quot;Git介绍&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/h1&gt;&lt;/blockquote&gt;
-&lt;pre&gt;&lt;code&gt;使用 ./tools/Git/ 目录中的 Git-2.6.3-64-bit.exe 软件安装配置好Git，具体参考：
-* [如何在windows下安装GIT][2]
-* [Windows系统下Git安装图解][3]
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;#2. 安装Node.js &lt;a href=&quot;http://baike.baidu.com/link?url=dEE65i0ySZgY1l98IqotYwHstkQR61z-wJICadvqMl-8DFXhv_VuVUq_95VmAbV3JESZtutlhdYoYbotKbjg6a&quot; title=&quot;Node.js&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;使用 ./tools/Nodejs/ 目录中的 node-v4.4.6-x64.msi 软件安装配置好Node，具体参考：
-* [nodejs-v4.4.6-api][5]
-* [参考本地开发手册][6]
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;#3. 申请GitHub在线账号 &lt;a href=&quot;http://baike.baidu.com/link?url=B4WsVB08In3DAAbSPEKIOEiKfz-LrIJo_g6MZavIp4aBc5Xbj0-fig70Y8iQI8VhI-jy8ppvRWmQvzT8zcm7Fa&quot; title=&quot;申请GitHub在线账号&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;[GitHub](http://github.com/)用于托管博客源码以及发布博客网站，我们也可以使用[Coding](http://coding.net/)
-
-&amp;gt; PS：可以使用[HTTPS](http://www.cnblogs.com/zhcncn/p/3731707.html)协议，但最好使用[SSH](http://blog.csdn.net/keyboardota/article/details/7603630)协议，免去每次从GitHub库中同步资源时需要输入账号密码的过程
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;#4. 安装Hexo &lt;a href=&quot;http://jingyan.baidu.com/article/a378c96093ef51b328283026.html&quot; title=&quot;安装Hexo&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; 使用 `npm` 命令，如果有被“墙”的情况，请使用淘宝的NPM镜像工具：`npm install -g cnpm --registry=https://registry.npm.taobao.org`  将 `npm` 命令替换成 `cnpm` 使用
-
-*新建个文件夹作为博客根目录，命令行下进入到该根目录，按照如下命令进行：*
-
-    npm install -g hexo-cli    // 安装Hexo命令行工具CLI
-    npm install hexo --save    // 安装Hexo博客框架
-    hexo init                 // 初始化，完毕后即可
-    hexo server -g            // 生成博客静态页并启动服务，http://localhost:4000 本地访问
-
-&amp;gt; PS: 推荐安装Hexo的Git插件：[hexo-deployer-git](http://github.com/hexojs/hexo-deployer-git)，`npm install hexo-deployer-git --save`
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;#5. 安装Hexo相关插件 &lt;a href=&quot;http://hexo.io/plugins/&quot; title=&quot;安装Hexo相关插件&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;这里给出一个*package.json*文件，内容如下：
-
-    {
-      &amp;quot;name&amp;quot;: &amp;quot;hexo-site&amp;quot;,
-      &amp;quot;version&amp;quot;: &amp;quot;0.0.0&amp;quot;,
-      &amp;quot;private&amp;quot;: true,
-      &amp;quot;hexo&amp;quot;: {
-        &amp;quot;version&amp;quot;: &amp;quot;3.2.0&amp;quot;
-      },
-      &amp;quot;dependencies&amp;quot;: {
-        &amp;quot;hexo&amp;quot;: &amp;quot;^3.2.0&amp;quot;,
-        &amp;quot;hexo-deployer-git&amp;quot;: &amp;quot;^0.2.0&amp;quot;,
-        &amp;quot;hexo-generator-archive&amp;quot;: &amp;quot;^0.1.4&amp;quot;,
-        &amp;quot;hexo-generator-baidu-sitemap&amp;quot;: &amp;quot;^0.1.1&amp;quot;,
-        &amp;quot;hexo-generator-category&amp;quot;: &amp;quot;^0.1.3&amp;quot;,
-        &amp;quot;hexo-generator-feed&amp;quot;: &amp;quot;^1.1.0&amp;quot;,
-        &amp;quot;hexo-generator-index&amp;quot;: &amp;quot;^0.2.0&amp;quot;,
-        &amp;quot;hexo-generator-search&amp;quot;: &amp;quot;^1.0.2&amp;quot;,
-        &amp;quot;hexo-generator-seo-friendly-sitemap&amp;quot;: &amp;quot;0.0.16&amp;quot;,
-        &amp;quot;hexo-generator-sitemap&amp;quot;: &amp;quot;^1.1.2&amp;quot;,
-        &amp;quot;hexo-generator-tag&amp;quot;: &amp;quot;^0.2.0&amp;quot;,
-        &amp;quot;hexo-renderer-ejs&amp;quot;: &amp;quot;^0.2.0&amp;quot;,
-        &amp;quot;hexo-renderer-marked&amp;quot;: &amp;quot;^0.2.10&amp;quot;,
-        &amp;quot;hexo-renderer-stylus&amp;quot;: &amp;quot;^0.3.1&amp;quot;,
-        &amp;quot;hexo-server&amp;quot;: &amp;quot;^0.2.0&amp;quot;
-      }
-    }
-
-&amp;gt; PS：通过这个*package.json*文件可以快速搭建Hexo博客： 
-&amp;gt; 
-&amp;gt; 1）新建一个文件夹，命名为blog，作为Hexo博客根目录；
-&amp;gt; 
-&amp;gt; 2）在blog文件夹下新建*package.json*文件，将上面的内容复制粘贴进去；
-&amp;gt; 
-&amp;gt; 3）命令行进入到blog目录，执行 `npm install` 命令，等待执行完毕，Hexo博客框架即可搭建完毕；
-&amp;gt; 
-&amp;gt; 4）使用 `hexo s -g` 命令，执行完毕后访问 http://localhost:4000 即可本地访问预览；
-&amp;gt; 
-&amp;gt; **注意：能够快速搭建的前提是安装了 node.js、hexo-cli，如果不清楚，请参考_[2. 安装Node.js、4. 安装Hexo]_**
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;#6. Hexo个性化：安装 &lt;a href=&quot;http://github.com/MOxFIVE/hexo-theme-yelee&quot; title=&quot;yelee&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;yelee&lt;/a&gt; 主题 &lt;a href=&quot;http://hexo.io/themes/&quot; title=&quot;Hexo个性化：安装yelee主题&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;* yelee主题[预览][12]
-* yelee主题[安装][13]
-    * 1) 命令行进入Hexo博客框架根目录下，执行 
-
-            git clone https://github.com/MOxFIVE/hexo-theme-yelee.git themes/yelee
-
-        之后打开当前根目录下的 _config.yml 文件，修改为 `theme: yelee # 博客主题`并保存，当前命令行执行
-
-            hexo clean        // 清除
-            hexo server -g    // 生成静态博客页面并打开服务器，访问 http://localhost:4000 访问预览
-
-    * 2) 当前目录下 ./themes/ 文件夹中，将yelee文件夹所有内容复制粘贴到你自己的Hexo博客框架根目录下themes文件夹中，之后打开你自己的Hexo博客框架根目录下的 _config.yml 文件，修改为 `theme: yelee # 博客主题`并保存，当前命令行执行
-
-            hexo clean        // 清除
-            hexo server -g    // 生成静态博客页面并打开服务器，访问 http://localhost:4000 访问预览
-
-* yelee主题[使用说明][14]
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;#7. 参考资料&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;* [http://ibruce.info/2013/11/22/hexo-your-blog/][15]
-* [http://blog.csdn.net/jzooo/article/details/46781805][16]
-&lt;/code&gt;&lt;/pre&gt;</content>
+&lt;p&gt;工作之余，出于对技术的爱好，也想养成编写文档的好习惯，遂腾出数天的时间来研究和捣鼓，终得“偿”所愿。念及学习之过程，顿感混乱之思绪。欲清理，故拙笔之一二，以备参考…&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;##步骤&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;###安装Git &lt;a href=&quot;http://baike.baidu.com/link?url=q2K7vqCXq55cwR_wFr0Q65PprJbOdNGA7vuKbIe97lgcPctZFUN603xGb6Ilo5C8JVN9ifdsaNaHBakeEb3CrRemVFBuP-e_q4vkGVOANpK&quot; title=&quot;Git介绍&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt; 使用 ./tools/Git/ 目录中的 Git-2.6.3-64-bit.exe 软件安装配置好Git，具体参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://jingyan.baidu.com/article/90895e0fb3495f64ed6b0b50.html&quot; title=&quot;如何在windows下安装GIT&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;如何在windows下安装GIT&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.jb51.net/article/55438.htm&quot; title=&quot;Windows系统下Git安装图解&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Windows系统下Git安装图解&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;###安装Node.js &lt;a href=&quot;http://baike.baidu.com/link?url=dEE65i0ySZgY1l98IqotYwHstkQR61z-wJICadvqMl-8DFXhv_VuVUq_95VmAbV3JESZtutlhdYoYbotKbjg6a&quot; title=&quot;Node.js&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt; 使用 ./tools/Nodejs/ 目录中的 node-v4.4.6-x64.msi 软件安装配置好Node，具体参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://nodejs.org/dist/v4.4.6/docs/api/&quot; title=&quot;nodejs-v4.4.6-api&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;nodejs-v4.4.6-api&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;./tools/Nodejs/nodejs-v4.4.6-api/all.html&quot; title=&quot;参考本地开发手册&quot;&gt;参考本地开发手册&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;###申请GitHub在线账号 &lt;a href=&quot;http://baike.baidu.com/link?url=B4WsVB08In3DAAbSPEKIOEiKfz-LrIJo_g6MZavIp4aBc5Xbj0-fig70Y8iQI8VhI-jy8ppvRWmQvzT8zcm7Fa&quot; title=&quot;申请GitHub在线账号&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt; &lt;a href=&quot;http://github.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt;用于托管博客源码以及发布博客网站，我们也可以使用&lt;a href=&quot;http://coding.net/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Coding&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;PS：可以使用&lt;a href=&quot;http://www.cnblogs.com/zhcncn/p/3731707.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HTTPS&lt;/a&gt;协议，但最好使用&lt;a href=&quot;http://blog.csdn.net/keyboardota/article/details/7603630&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SSH&lt;/a&gt;协议，免去每次从GitHub库中同步资源时需要输入账号密码的过程&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;###安装Hexo &lt;a href=&quot;http://jingyan.baidu.com/article/a378c96093ef51b328283026.html&quot; title=&quot;安装Hexo&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;使用 &lt;code&gt;npm&lt;/code&gt; 命令，如果有被“墙”的情况，请使用淘宝的NPM镜像工具：&lt;code&gt;npm install -g cnpm --registry=https://registry.npm.taobao.org&lt;/code&gt;  将 &lt;code&gt;npm&lt;/code&gt; 命令替换成 &lt;code&gt;cnpm&lt;/code&gt; 使用&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt; &lt;em&gt;新建个文件夹作为博客根目录，命令行下进入到该根目录，按照如下命令进行：&lt;/em&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install -g hexo-cli    // 安装Hexo命令行工具CLI
+npm install hexo --save    // 安装Hexo博客框架
+hexo init                 // 初始化，完毕后即可
+hexo server -g            // 生成博客静态页并启动服务，http://localhost:4000 本地访问
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;PS: 推荐安装Hexo的Git插件：&lt;a href=&quot;http://github.com/hexojs/hexo-deployer-git&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo-deployer-git&lt;/a&gt;，&lt;code&gt;npm install hexo-deployer-git --save&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;###安装Hexo相关插件 &lt;a href=&quot;http://hexo.io/plugins/&quot; title=&quot;安装Hexo相关插件&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt; 这里给出一个&lt;em&gt;package.json&lt;/em&gt;文件，内容如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;name&amp;quot;: &amp;quot;hexo-site&amp;quot;,
+  &amp;quot;version&amp;quot;: &amp;quot;0.0.0&amp;quot;,
+  &amp;quot;private&amp;quot;: true,
+  &amp;quot;hexo&amp;quot;: {
+    &amp;quot;version&amp;quot;: &amp;quot;3.2.0&amp;quot;
+  },
+  &amp;quot;dependencies&amp;quot;: {
+    &amp;quot;hexo&amp;quot;: &amp;quot;^3.2.0&amp;quot;,
+    &amp;quot;hexo-deployer-git&amp;quot;: &amp;quot;^0.2.0&amp;quot;,
+    &amp;quot;hexo-generator-archive&amp;quot;: &amp;quot;^0.1.4&amp;quot;,
+    &amp;quot;hexo-generator-baidu-sitemap&amp;quot;: &amp;quot;^0.1.1&amp;quot;,
+    &amp;quot;hexo-generator-category&amp;quot;: &amp;quot;^0.1.3&amp;quot;,
+    &amp;quot;hexo-generator-feed&amp;quot;: &amp;quot;^1.1.0&amp;quot;,
+    &amp;quot;hexo-generator-index&amp;quot;: &amp;quot;^0.2.0&amp;quot;,
+    &amp;quot;hexo-generator-search&amp;quot;: &amp;quot;^1.0.2&amp;quot;,
+    &amp;quot;hexo-generator-seo-friendly-sitemap&amp;quot;: &amp;quot;0.0.16&amp;quot;,
+    &amp;quot;hexo-generator-sitemap&amp;quot;: &amp;quot;^1.1.2&amp;quot;,
+    &amp;quot;hexo-generator-tag&amp;quot;: &amp;quot;^0.2.0&amp;quot;,
+    &amp;quot;hexo-renderer-ejs&amp;quot;: &amp;quot;^0.2.0&amp;quot;,
+    &amp;quot;hexo-renderer-marked&amp;quot;: &amp;quot;^0.2.10&amp;quot;,
+    &amp;quot;hexo-renderer-stylus&amp;quot;: &amp;quot;^0.3.1&amp;quot;,
+    &amp;quot;hexo-server&amp;quot;: &amp;quot;^0.2.0&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;PS：通过这个&lt;em&gt;package.json&lt;/em&gt;文件可以快速搭建Hexo博客： &lt;/p&gt;
+&lt;p&gt;1）新建一个文件夹，命名为blog，作为Hexo博客根目录；&lt;/p&gt;
+&lt;p&gt;2）在blog文件夹下新建&lt;em&gt;package.json&lt;/em&gt;文件，将上面的内容复制粘贴进去；&lt;/p&gt;
+&lt;p&gt;3）命令行进入到blog目录，执行 &lt;code&gt;npm install&lt;/code&gt; 命令，等待执行完毕，Hexo博客框架即可搭建完毕；&lt;/p&gt;
+&lt;p&gt;4）使用 &lt;code&gt;hexo s -g&lt;/code&gt; 命令，执行完毕后访问 &lt;a href=&quot;http://localhost:4000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://localhost:4000&lt;/a&gt; 即可本地访问预览；&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意：能够快速搭建的前提是安装了 node.js、hexo-cli，如果不清楚，请参考&lt;em&gt;[2. 安装Node.js、4. 安装Hexo]&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;###Hexo个性化：安装 &lt;a href=&quot;http://github.com/MOxFIVE/hexo-theme-yelee&quot; title=&quot;yelee&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;yelee&lt;/a&gt; 主题 &lt;a href=&quot;http://hexo.io/themes/&quot; title=&quot;Hexo个性化：安装yelee主题&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;?&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;yelee主题&lt;a href=&quot;http://moxfive.xyz/&quot; title=&quot;yelee主题预览&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;预览&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;yelee主题&lt;a href=&quot;http://github.com/MOxFIVE/hexo-theme-yelee&quot; title=&quot;yelee主题安装&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安装&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;1) 命令行进入Hexo博客框架根目录下，执行 &lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git clone https://github.com/MOxFIVE/hexo-theme-yelee.git themes/yelee
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  之后打开当前根目录下的 _config.yml 文件，修改为 &lt;code&gt;theme: yelee # 博客主题&lt;/code&gt;并保存，当前命令行执行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo clean        // 清除
+hexo server -g    // 生成静态博客页面并打开服务器，访问 http://localhost:4000 访问预览
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;2) 当前目录下 ./themes/ 文件夹中，将yelee文件夹所有内容复制粘贴到你自己的Hexo博客框架根目录下themes文件夹中，之后打开你自己的Hexo博客框架根目录下的 _config.yml 文件，修改为 &lt;code&gt;theme: yelee # 博客主题&lt;/code&gt;并保存，当前命令行执行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo clean        // 清除
+hexo server -g    // 生成静态博客页面并打开服务器，访问 http://localhost:4000 访问预览
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;yelee主题&lt;a href=&quot;http://moxfive.coding.me/yelee/&quot; title=&quot;yelee主题使用说明&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;使用说明&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;###参考资料&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://ibruce.info/2013/11/22/hexo-your-blog/&quot; title=&quot;搭建你的Hexo&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://ibruce.info/2013/11/22/hexo-your-blog/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/jzooo/article/details/46781805&quot; title=&quot;零基础免费搭建个人博客-hexo+github&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.csdn.net/jzooo/article/details/46781805&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</content>
     
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;工作之余，出于对技术的爱好，也想养成编写文档的好习惯，遂腾出数天的时间来研究和捣鼓，终得“偿”所愿。念及学习之过程，顿感混乱之思绪。欲清理，故拙笔之一二，以备参考…&lt;br&gt;
+&lt;p&gt;工作之余，出于对技术的爱好，也想养成编写文档的好习惯，遂腾出数天的时间来研究和捣鼓，终得“偿”所愿。念及学习之过程，顿感混乱之思绪。欲清理，故拙笔之一二，以备参考…&lt;/p&gt;
+&lt;/blockquote&gt;
     
     </summary>
     
