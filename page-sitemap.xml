@@ -7,6 +7,13 @@
     </url>
     
     <url>
+        <loc>http://hweih.github.io//404.html</loc>
+        <lastmod>2016-06-29T09:04:00.911Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
         <loc>http://hweih.github.io/about/index.html</loc>
         <lastmod>2016-06-28T09:32:08.253Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -16,13 +23,6 @@
     <url>
         <loc>http://hweih.github.io/tags/index.html</loc>
         <lastmod>2016-06-28T09:31:31.236Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
-    <url>
-        <loc>http://hweih.github.io//404.html</loc>
-        <lastmod>2016-06-28T03:33:48.646Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>

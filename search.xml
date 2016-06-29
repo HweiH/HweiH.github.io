@@ -62,76 +62,47 @@
     <entry>
       <title><![CDATA[404 Not Found：该页无法显示]]></title>
       <url>http://hweih.github.io//404.html</url>
-      <content type="html"><![CDATA[<style type="text/css">
-    .article-header {
-        padding: 0;
-        padding-top: 26px;
-        border-left: none;
-        text-align: center;
-    }
-    .article-header:hover {
-        border-left: none;
-    }
-    .article-title {
-        font-size: 2.1em;
-    }
-    strong a {
-        color: #747474;
-    }
-    .article-meta {
-        display: none;
-    }
-    .share {
-        display: none;
-    }
-    .ds-meta {
-        display: none;
-    }
-    .player {
-        margin-left: -10px;
-    }
-    .sign {
-        text-align: right;
-        font-style: italic;
-    }
-      #page-visit {
-        display: none;
-    }
-    .center {
-        text-align: center;
-        height: 2.5em;
-        font-weight: bold;
-    }
-    .article-entry hr {
-        margin: 0;
-    }
-    .pic {
-        text-align: center;
-        margin: 0;
-    }
-    .pic br {
-          display: none;
-      }
-    #container .article-info-post.article-info {
+      <content type="html"><![CDATA[<p><style type="text/css"><br>    .article-header {<br>        padding: 0;<br>        padding-top: 26px;<br>        border-left: none;<br>        text-align: center;<br>    }<br>    .article-header:hover {<br>        border-left: none;<br>    }<br>    .article-title {<br>        font-size: 2.1em;<br>    }<br>    strong a {<br>        color: #747474;<br>    }<br>    .article-meta {<br>        display: none;<br>    }<br>    .share {<br>        display: none;<br>    }<br>    .ds-meta {<br>        display: none;<br>    }<br>    .player {<br>        margin-left: -10px;<br>    }<br>    .sign {<br>        text-align: right;<br>        font-style: italic;<br>    }</p>
+<pre><code>  #page-visit {
+    display: none;
+}
+.center {
+    text-align: center;
+    height: 2.5em;
+    font-weight: bold;
+}
+.article-entry hr {
+    margin: 0;
+}
+.pic {
+    text-align: center;
+    margin: 0;
+}
+.pic br {
       display: none;
-      }
-    #container .article .article-title {
-    padding: 0;
-    }
-</style>]]></content>
-    </entry>
-    
-    <entry>
-      <title></title>
-      <url>http://hweih.github.io/tags/index.html</url>
-      <content type="html"><![CDATA[<p>##…待定…</p>
-]]></content>
+  }
+#container .article-info-post.article-info {
+  display: none;
+  }
+#container .article .article-title {
+padding: 0;
+}
+</code></pre><p></style></p>
+<script type="text/javascript" src="http://www.qq.com/404/search_children.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://www.qq.com/404/search_children.js" charset="utf-8" homepageurl="http://hweih.github.io/" homepagename="回到我的主页"></script>]]></content>
     </entry>
     
     <entry>
       <title></title>
       <url>http://hweih.github.io/about/index.html</url>
       <content type="html"><![CDATA[<p>##…待定….</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>http://hweih.github.io/tags/index.html</url>
+      <content type="html"><![CDATA[<p>##…待定…</p>
 ]]></content>
     </entry>
     
