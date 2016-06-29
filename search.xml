@@ -88,13 +88,20 @@
 padding: 0;
 }
 </code></pre><p></style></p>
-<script type="text/javascript" src="http://www.qq.com/404/search_children.js" charset="utf-8" homepageurl="http://hweih.github.io/" homepagename="回到我的主页"></script>]]></content>
-    </entry>
-    
-    <entry>
-      <title></title>
-      <url>http://hweih.github.io/about/index.html</url>
-      <content type="html"><![CDATA[<p>##…待定….</p>
+<script type="text/javascript">
+(function() {
+    var tg = document.createElement('script');
+    tg.type = 'text/javascript';
+    tg.async = true;
+    /* 下面是我自己的 embed.js 链接，请改为你自己的地址 */
+    tg.src = 'http://www.qq.com/404/search_children.js';
+    tg.homePageUrl = "http://hweih.github.io/index.html";
+    tg.homePageName = "回到我的主页";
+    tg.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+       || document.getElementsByTagName('body')[0]).appendChild(tg);
+})();
+</script>
 ]]></content>
     </entry>
     
@@ -102,6 +109,13 @@ padding: 0;
       <title></title>
       <url>http://hweih.github.io/tags/index.html</url>
       <content type="html"><![CDATA[<p>##…待定…</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>http://hweih.github.io/about/index.html</url>
+      <content type="html"><![CDATA[<p>##…待定….</p>
 ]]></content>
     </entry>
     
