@@ -4,6 +4,49 @@
   
     
     <entry>
+      <title><![CDATA[JBoss-eap-4.3中部署多个实例(仅供参考)]]></title>
+      <url>http://hweih.github.io/2016/09/18/JBoss-eap-4-3%E4%B8%AD%E9%83%A8%E7%BD%B2%E5%A4%9A%E4%B8%AA%E5%AE%9E%E4%BE%8B-%E4%BB%85%E4%BE%9B%E5%8F%82%E8%80%83/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>通过这几天在 JBoss 服务器上部署新系统的学习，觉得有很多细节需要注意，特此记录以备不时的参考之需…</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>新系统使用 Spring 技术的基础上采用“前/后端分离”模式，前端为“web端”，采用 SpringMVC 等技术，后台为“APP端”，采用 DUBBO 等技术向前端提供领域支持。整个系统可以分成两大块，暂且称为 frontend.war 以及 backend.war。</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
+<li><p>JBoss 服务器默认提供的几个实例：</p>
+<pre><code>all, default, minimal, production    # 在 %JBOSS_HOME%\Server\目录下面
+</code></pre></li>
+<li><p>我们直接在该 <code>%JBOSS_HOME%\Server\</code> 目录下复制 <strong>default</strong> 文件夹两遍，并分别重命名为 <strong>app</strong> 和 <strong>web</strong>，至此该目录下面增加了 app 和 web 这两个文件夹；</p>
+</li>
+<li><p>为 <strong>app</strong> 和 <strong>web</strong> 这两个实例编写启动脚本：</p>
+<p> app 实例的启动脚本(start-app.bat)</p>
+<pre><code>rd /s /q %cd%\..\server\app\data    # 删除临时文件夹
+rd /s /q %cd%\..\server\app\log        # 同上
+rd /s /q %cd%\..\server\app\tmp        # 同上
+rd /s /q %cd%\..\server\app\work    # 同上
+run.bat -c app -b 0.0.0.0
+</code></pre><p> web 实例的启动脚本(start-web.bat)</p>
+<pre><code>rd /s /q %cd%\..\server\web\data    # 删除临时文件夹
+rd /s /q %cd%\..\server\web\log        # 同上
+rd /s /q %cd%\..\server\web\tmp        # 同上
+rd /s /q %cd%\..\server\web\work    # 同上
+run.bat -c web -b 0.0.0.0
+</code></pre></li>
+<li><p>如果此时我们直接运行脚本，那么将会出现端口使用冲突的问题。我们可以通过配置端口增量 ports-* 来解决：</p>
+<p> 1) 打开 app 实例文件夹下面 ./conf/jboss-service.xml 文件，查找 ports，可以发现默认是被注释掉的。我们去掉注释启用该配置。将默认的 ports-01 改为我们需要的配置值；</p>
+<p> 2) JBoss 服务器提供了基本的几个配置值：ports-default，ports-01，ports-02，ports-03，这几个详细的配置内容可以在 %JBOSS_HOME%\docs\examples\binding-manager\sample-bindings.xml 文件中可以找到；</p>
+<p> 3) 上面提到的这几个配置值是使用递增的方式配置对应的端口的，递增值为 100；</p>
+<p> 4) 我们可以将 sample-bindings.xml 复制一份出来，以 100 递增值修改里面的对应参数，提供下载参考：<a href="http://pan.baidu.com/s/1nvtqLTn" target="_blank" rel="external">well-bindings.xml</a></p>
+</li>
+<li><p>好了，经过以上配置之后，我们将 *.war 文件分别放到对应实例的 deploy 文件夹下，然后分别双击 start-app.bat 和 start-web.bat 以启动 JBoss 容器并实例化好新的系统；</p>
+</li>
+<li><p>打开 <a href="http://localhost" target="_blank" rel="external">http://localhost</a>:<port>/<context>，直接访问，其中：<port> 表示配置的端口，例如使用 ports-default，则表示 8080，使用 ports-01，则表示 8180，<context> 则表示当前新系统的上下文；</context></port></context></port></p>
+</li>
+</ol>
+<p>–<br>2016年9月18日20:44:41</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[使用Hexo框架搭建个人博客的Summary]]></title>
       <url>http://hweih.github.io/2016/06/29/%E4%BD%BF%E7%94%A8Hexo%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%9A%84Summary/</url>
       <content type="html"><![CDATA[<blockquote>
@@ -168,6 +211,20 @@ hexo server -g    // 生成静态博客页面并打开服务器，访问 http://
   
     
     <entry>
+      <title></title>
+      <url>http://hweih.github.io/about/index.html</url>
+      <content type="html"><![CDATA[<p>##…待定….</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>http://hweih.github.io/tags/index.html</url>
+      <content type="html"><![CDATA[<p>##…待定…</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[404 Not Found：该页无法显示]]></title>
       <url>http://hweih.github.io//404.html</url>
       <content type="html"><![CDATA[<style type="text/css">
@@ -236,20 +293,6 @@ hexo server -g    // 生成静态博客页面并打开服务器，访问 http://
 <p><font size="4" color="#258FC5"><strong>很抱歉，您访问的地址并不存在。你可以：</strong></font><br></p>
 <p><font size="4" color="#258FC5"><strong><a href="http://hweih.github.io/index.html">回主页</a></strong> * <strong><a href="https://hweih.github.io/archives/">阅读文章</a></strong> * <strong><a href="https://hweih.github.io/tags/essays">阅览随笔</a></strong></font><br></p>
 <p><font size="4" color="#258FC5"><strong>还可在左边搜索框中对本站文章进行检索，以获取更多相关信息。</strong></font><br></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title></title>
-      <url>http://hweih.github.io/tags/index.html</url>
-      <content type="html"><![CDATA[<p>##…待定…</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title></title>
-      <url>http://hweih.github.io/about/index.html</url>
-      <content type="html"><![CDATA[<p>##…待定….</p>
 ]]></content>
     </entry>
     

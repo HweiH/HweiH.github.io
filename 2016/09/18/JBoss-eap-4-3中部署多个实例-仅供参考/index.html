@@ -15,15 +15,16 @@
 
 
 
-<meta name="description" content="记录生活点滴">
-<meta property="og:type" content="website">
-<meta property="og:title" content="well's blog">
-<meta property="og:url" content="http://hweih.github.io/categories/日志/二级目录/index.html">
+<meta name="description" content="通过这几天在 JBoss 服务器上部署新系统的学习，觉得有很多细节需要注意，特此记录以备不时的参考之需…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JBoss-eap-4.3中部署多个实例(仅供参考)">
+<meta property="og:url" content="http://hweih.github.io/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/index.html">
 <meta property="og:site_name" content="well's blog">
-<meta property="og:description" content="记录生活点滴">
+<meta property="og:description" content="通过这几天在 JBoss 服务器上部署新系统的学习，觉得有很多细节需要注意，特此记录以备不时的参考之需…">
+<meta property="og:updated_time" content="2016-09-18T12:52:51.574Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="well's blog">
-<meta name="twitter:description" content="记录生活点滴">
+<meta name="twitter:title" content="JBoss-eap-4.3中部署多个实例(仅供参考)">
+<meta name="twitter:description" content="通过这几天在 JBoss 服务器上部署新系统的学习，觉得有很多细节需要注意，特此记录以备不时的参考之需…">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -55,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Category: 二级目录 | well&#39;s blog</title>
+<title>JBoss-eap-4.3中部署多个实例(仅供参考) | well&#39;s blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -65,10 +66,10 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: false,
+        isPost: true,
         isArchive: false,
         isTag: false,
-        isCategory: true,
+        isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
         search: true
@@ -298,60 +299,270 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-JBoss-eap-4-3中部署多个实例-仅供参考" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2016/06/26/hello/" class="archive-article-date">
-      <time datetime="2016-06-26T15:21:38.000Z" itemprop="datePublished">06-26</time>
+    <div class="article-meta">
+      <a href="/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/" class="article-date">
+      <time datetime="2016-09-18T08:02:44.000Z" itemprop="datePublished">2016-09-18</time>
 </a>
 
+ 
+    <a href="/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/#comments" title="Comments">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count" ></span>
+        
+        
+    </a>
 
-        </div>
-         
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/26/hello/">hello</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JBoss-eap-4.3中部署多个实例(仅供参考)
     </h1>
   
 
-        <div class="article-info info-on-archive">
-          
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/日志/">日志</a><a class="article-category-link" href="/categories/日志/二级目录/">二级目录</a>
-    </div>
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 
-
-          
+        
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hello/">hello</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工作笔记/">工作笔记</a></li></ul>
     </div>
 
-        </div>
         <div class="clearfix"></div>
-    </header>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>通过这几天在 JBoss 服务器上部署新系统的学习，觉得有很多细节需要注意，特此记录以备不时的参考之需…</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>新系统使用 Spring 技术的基础上采用“前/后端分离”模式，前端为“web端”，采用 SpringMVC 等技术，后台为“APP端”，采用 DUBBO 等技术向前端提供领域支持。整个系统可以分成两大块，暂且称为 frontend.war 以及 backend.war。</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
+<li><p>JBoss 服务器默认提供的几个实例：</p>
+<pre><code>all, default, minimal, production    # 在 %JBOSS_HOME%\Server\目录下面
+</code></pre></li>
+<li><p>我们直接在该 <code>%JBOSS_HOME%\Server\</code> 目录下复制 <strong>default</strong> 文件夹两遍，并分别重命名为 <strong>app</strong> 和 <strong>web</strong>，至此该目录下面增加了 app 和 web 这两个文件夹；</p>
+</li>
+<li><p>为 <strong>app</strong> 和 <strong>web</strong> 这两个实例编写启动脚本：</p>
+<p> app 实例的启动脚本(start-app.bat)</p>
+<pre><code>rd /s /q %cd%\..\server\app\data    # 删除临时文件夹
+rd /s /q %cd%\..\server\app\log        # 同上
+rd /s /q %cd%\..\server\app\tmp        # 同上
+rd /s /q %cd%\..\server\app\work    # 同上
+run.bat -c app -b 0.0.0.0
+</code></pre><p> web 实例的启动脚本(start-web.bat)</p>
+<pre><code>rd /s /q %cd%\..\server\web\data    # 删除临时文件夹
+rd /s /q %cd%\..\server\web\log        # 同上
+rd /s /q %cd%\..\server\web\tmp        # 同上
+rd /s /q %cd%\..\server\web\work    # 同上
+run.bat -c web -b 0.0.0.0
+</code></pre></li>
+<li><p>如果此时我们直接运行脚本，那么将会出现端口使用冲突的问题。我们可以通过配置端口增量 ports-* 来解决：</p>
+<p> 1) 打开 app 实例文件夹下面 ./conf/jboss-service.xml 文件，查找 ports，可以发现默认是被注释掉的。我们去掉注释启用该配置。将默认的 ports-01 改为我们需要的配置值；</p>
+<p> 2) JBoss 服务器提供了基本的几个配置值：ports-default，ports-01，ports-02，ports-03，这几个详细的配置内容可以在 %JBOSS_HOME%\docs\examples\binding-manager\sample-bindings.xml 文件中可以找到；</p>
+<p> 3) 上面提到的这几个配置值是使用递增的方式配置对应的端口的，递增值为 100；</p>
+<p> 4) 我们可以将 sample-bindings.xml 复制一份出来，以 100 递增值修改里面的对应参数，提供下载参考：<a href="http://pan.baidu.com/s/1nvtqLTn" target="_blank" rel="external">well-bindings.xml</a></p>
+</li>
+<li><p>好了，经过以上配置之后，我们将 *.war 文件分别放到对应实例的 deploy 文件夹下，然后分别双击 start-app.bat 和 start-web.bat 以启动 JBoss 容器并实例化好新的系统；</p>
+</li>
+<li><p>打开 <a href="http://localhost" target="_blank" rel="external">http://localhost</a>:<port>/<context>，直接访问，其中：<port> 表示配置的端口，例如使用 ports-default，则表示 8080，使用 ports-01，则表示 8180，<context> 则表示当前新系统的上下文；</context></port></context></port></p>
+</li>
+</ol>
+<p>–<br>2016年9月18日20:44:41</p>
+
+      
+    </div>
+    
   </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/">JBoss-eap-4.3中部署多个实例(仅供参考)</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">well</a></p>
+        <p><span>Created:</span>2016-09-18, 16:02:44</p>
+        <p><span>Updated:</span>2016-09-18, 20:52:51</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/" title="JBoss-eap-4.3中部署多个实例(仅供参考)">http://hweih.github.io/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/</a>
+            <span class="copy-path" data-clipboard-text="From http://hweih.github.io/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/　　By well" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/">
+                    使用Hexo框架搭建个人博客的Summary
+                </a>
+            </div>
+        
+    </nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前提"><span class="toc-number">1.</span> <span class="toc-text">前提</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-number">2.</span> <span class="toc-text">步骤</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+<script>
+    yiliaConfig.toc = ["Hide", "Show", !!"false"];
+</script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"JBoss-eap-4.3中部署多个实例(仅供参考)　| well's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/" data-title="JBoss-eap-4.3中部署多个实例(仅供参考)" data-url="http://hweih.github.io/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"well"};
+        (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';
+            ds.async = true;
+            /* 下面是我自己的 embed.js 链接，请改为你自己的地址 */
+            ds.src = 'http://hweih.github.io/js/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0]
+             || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+            // Add comment count
+            $(function(){
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=well&threads=2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/&callback=?";
+                $.getJSON(jsonUrl, function(result){
+                    $.each(result.response, function(i, field){
+                        var value = field.comments;
+                        if (value > 0) {
+                            $(".count-comment").text(value);
+                            return;
+                        }
+                    })
+                })
+            })
+        
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</div>
 
     
 
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/" title="Next: 使用Hexo框架搭建个人博客的Summary">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/">JBoss-eap-4.3中部署多个实例(仅供参考)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/">使用Hexo框架搭建个人博客的Summary</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/帮助手册/">Hexo采用yelee主题的建站手册</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/文章摘要2/">文章摘要2</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/文章摘要1/">文章摘要1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/26/hello/">hello</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/26/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hweih.github.io/"/>
-  <updated>2016-06-29T13:32:37.831Z</updated>
+  <updated>2016-09-18T12:52:51.574Z</updated>
   <id>http://hweih.github.io/</id>
   
   <author>
@@ -14,6 +14,65 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JBoss-eap-4.3中部署多个实例(仅供参考)</title>
+    <link href="http://hweih.github.io/2016/09/18/JBoss-eap-4-3%E4%B8%AD%E9%83%A8%E7%BD%B2%E5%A4%9A%E4%B8%AA%E5%AE%9E%E4%BE%8B-%E4%BB%85%E4%BE%9B%E5%8F%82%E8%80%83/"/>
+    <id>http://hweih.github.io/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/</id>
+    <published>2016-09-18T08:02:44.000Z</published>
+    <updated>2016-09-18T12:52:51.574Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;通过这几天在 JBoss 服务器上部署新系统的学习，觉得有很多细节需要注意，特此记录以备不时的参考之需…&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;前提&quot;&gt;&lt;a href=&quot;#前提&quot; class=&quot;headerlink&quot; title=&quot;前提&quot;&gt;&lt;/a&gt;前提&lt;/h2&gt;&lt;p&gt;新系统使用 Spring 技术的基础上采用“前/后端分离”模式，前端为“web端”，采用 SpringMVC 等技术，后台为“APP端”，采用 DUBBO 等技术向前端提供领域支持。整个系统可以分成两大块，暂且称为 frontend.war 以及 backend.war。&lt;/p&gt;
+&lt;h2 id=&quot;步骤&quot;&gt;&lt;a href=&quot;#步骤&quot; class=&quot;headerlink&quot; title=&quot;步骤&quot;&gt;&lt;/a&gt;步骤&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;JBoss 服务器默认提供的几个实例：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;all, default, minimal, production    # 在 %JBOSS_HOME%\Server\目录下面
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;我们直接在该 &lt;code&gt;%JBOSS_HOME%\Server\&lt;/code&gt; 目录下复制 &lt;strong&gt;default&lt;/strong&gt; 文件夹两遍，并分别重命名为 &lt;strong&gt;app&lt;/strong&gt; 和 &lt;strong&gt;web&lt;/strong&gt;，至此该目录下面增加了 app 和 web 这两个文件夹；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;为 &lt;strong&gt;app&lt;/strong&gt; 和 &lt;strong&gt;web&lt;/strong&gt; 这两个实例编写启动脚本：&lt;/p&gt;
+&lt;p&gt; app 实例的启动脚本(start-app.bat)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;rd /s /q %cd%\..\server\app\data    # 删除临时文件夹
+rd /s /q %cd%\..\server\app\log        # 同上
+rd /s /q %cd%\..\server\app\tmp        # 同上
+rd /s /q %cd%\..\server\app\work    # 同上
+run.bat -c app -b 0.0.0.0
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt; web 实例的启动脚本(start-web.bat)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;rd /s /q %cd%\..\server\web\data    # 删除临时文件夹
+rd /s /q %cd%\..\server\web\log        # 同上
+rd /s /q %cd%\..\server\web\tmp        # 同上
+rd /s /q %cd%\..\server\web\work    # 同上
+run.bat -c web -b 0.0.0.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;如果此时我们直接运行脚本，那么将会出现端口使用冲突的问题。我们可以通过配置端口增量 ports-* 来解决：&lt;/p&gt;
+&lt;p&gt; 1) 打开 app 实例文件夹下面 ./conf/jboss-service.xml 文件，查找 ports，可以发现默认是被注释掉的。我们去掉注释启用该配置。将默认的 ports-01 改为我们需要的配置值；&lt;/p&gt;
+&lt;p&gt; 2) JBoss 服务器提供了基本的几个配置值：ports-default，ports-01，ports-02，ports-03，这几个详细的配置内容可以在 %JBOSS_HOME%\docs\examples\binding-manager\sample-bindings.xml 文件中可以找到；&lt;/p&gt;
+&lt;p&gt; 3) 上面提到的这几个配置值是使用递增的方式配置对应的端口的，递增值为 100；&lt;/p&gt;
+&lt;p&gt; 4) 我们可以将 sample-bindings.xml 复制一份出来，以 100 递增值修改里面的对应参数，提供下载参考：&lt;a href=&quot;http://pan.baidu.com/s/1nvtqLTn&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;well-bindings.xml&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;好了，经过以上配置之后，我们将 *.war 文件分别放到对应实例的 deploy 文件夹下，然后分别双击 start-app.bat 和 start-web.bat 以启动 JBoss 容器并实例化好新的系统；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;打开 &lt;a href=&quot;http://localhost&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://localhost&lt;/a&gt;:&lt;port&gt;/&lt;context&gt;，直接访问，其中：&lt;port&gt; 表示配置的端口，例如使用 ports-default，则表示 8080，使用 ports-01，则表示 8180，&lt;context&gt; 则表示当前新系统的上下文；&lt;/context&gt;&lt;/port&gt;&lt;/context&gt;&lt;/port&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;–&lt;br&gt;2016年9月18日20:44:41&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;通过这几天在 JBoss 服务器上部署新系统的学习，觉得有很多细节需要注意，特此记录以备不时的参考之需…&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="工作笔记" scheme="http://hweih.github.io/tags/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>使用Hexo框架搭建个人博客的Summary</title>
