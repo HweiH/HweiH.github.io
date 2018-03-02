@@ -15,15 +15,16 @@
 
 
 
-<meta name="description" content="记录生活点滴">
-<meta property="og:type" content="website">
-<meta property="og:title" content="well's blog">
-<meta property="og:url" content="http://hweih.github.io/archives/page/2/index.html">
+<meta name="description" content="Docker在windows操作系统和mac操作系统都提供了boot2docker作为docker-daemon的运行容器成为服务端，同时提供了对应的命令行和GUI客户端，配置Docker网络代理，需要分情况考虑，具体回归到boot2docker的架构上去考虑，如：Docker客户端代理配置、Docker服务端代理配置…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Win7中使用Docker(Boot2Docker)并配置HTTP网络代理">
+<meta property="og:url" content="http://hweih.github.io/2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/index.html">
 <meta property="og:site_name" content="well's blog">
-<meta property="og:description" content="记录生活点滴">
+<meta property="og:description" content="Docker在windows操作系统和mac操作系统都提供了boot2docker作为docker-daemon的运行容器成为服务端，同时提供了对应的命令行和GUI客户端，配置Docker网络代理，需要分情况考虑，具体回归到boot2docker的架构上去考虑，如：Docker客户端代理配置、Docker服务端代理配置…">
+<meta property="og:updated_time" content="2018-03-02T06:28:54.286Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="well's blog">
-<meta name="twitter:description" content="记录生活点滴">
+<meta name="twitter:title" content="Win7中使用Docker(Boot2Docker)并配置HTTP网络代理">
+<meta name="twitter:description" content="Docker在windows操作系统和mac操作系统都提供了boot2docker作为docker-daemon的运行容器成为服务端，同时提供了对应的命令行和GUI客户端，配置Docker网络代理，需要分情况考虑，具体回归到boot2docker的架构上去考虑，如：Docker客户端代理配置、Docker服务端代理配置…">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -55,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Archives | well&#39;s blog</title>
+<title>Win7中使用Docker(Boot2Docker)并配置HTTP网络代理 | well&#39;s blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -65,8 +66,8 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: false,
-        isArchive: true,
+        isPost: true,
+        isArchive: false,
         isTag: false,
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
@@ -298,93 +299,288 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-Win7中使用Docker(Boot2Docker)并配置HTTP网络代理" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2016/06/26/hello/" class="archive-article-date">
-      <time datetime="2016-06-26T15:21:38.000Z" itemprop="datePublished">06-26</time>
+    <div class="article-meta">
+      <a href="/2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/" class="article-date">
+      <time datetime="2018-03-02T06:00:41.000Z" itemprop="datePublished">2018-03-02</time>
 </a>
 
+ 
+    <a href="/2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count" ></span>
+        
+        
+    </a>
 
-        </div>
-         
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/26/hello/">hello</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Win7中使用Docker(Boot2Docker)并配置HTTP网络代理
     </h1>
   
 
-        <div class="article-info info-on-archive">
-          
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/日志/">日志</a><a class="article-category-link" href="/categories/日志/二级目录/">二级目录</a>
-    </div>
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 
-
-          
+        
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hello/">hello</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工作笔记/">工作笔记</a></li></ul>
     </div>
 
-        </div>
         <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
+      </div>
+      
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2016/06/26/hello-world/" class="archive-article-date">
-      <time datetime="2016-06-26T12:55:42.234Z" itemprop="datePublished">06-26</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/26/hello-world/">Hello World</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
+    <div class="article-entry" itemprop="articleBody">
+      
           
+        <blockquote>
+<p>Docker在windows操作系统和mac操作系统都提供了boot2docker作为docker-daemon的运行容器成为服务端，同时提供了对应的命令行和GUI客户端，配置Docker网络代理，需要分情况考虑，具体回归到boot2docker的架构上去考虑，如：Docker客户端代理配置、Docker服务端代理配置…</p>
+</blockquote>
+<a id="more"></a>
+<p><strong>Win7中使用Docker(Boot2Docker)并配置HTTP网络代理</strong></p>
+<p><strong>说明</strong></p>
+<ol>
+<li>使用的Docker版本为：1.13.1；</li>
+<li>Docker ToolBox，包含了boot2docker等工具；</li>
+</ol>
+<p><strong>配置步骤</strong></p>
+<ol>
+<li>双击“Docker Quickstart Terminal”，快速启动Docker；</li>
+<li>启动完毕之后出现Docker的标志性动物：蓝鲸；</li>
+<li><p>使用如下命令，进入docker-daemon所在的虚拟机；</p>
+<pre><code>docker-machine ssh default
+</code></pre></li>
+<li><p>再使用如下命令，打开boot2docker的配置文件profile，没有的话就新建；</p>
+<pre><code>sudo vi /var/lib/boot2docker/profile
+</code></pre></li>
+<li><p>添加如下的环境变量配置；</p>
+<pre><code># HTTP网络代理配置[可选]
+export HTTP_PROXY=&quot;http://host:port&quot;
+export HTTP_PROXY_USER=&quot;username&quot;
+export HTTP_PROXY_PASS=&quot;password&quot;
+# HTTPS网络代理配置[可选]
+export HTTPS_PROXY=&quot;http://host:port&quot;
+export HTTPS_PROXY_USER=&quot;username&quot;
+export HTTPS_PROXY_PASS=&quot;password&quot;
 
-          
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+# 其他代理也一样在这里配置...
+</code></pre></li>
+<li><p>保存并退出vi编辑器；</p>
+</li>
+<li><p>重启虚拟机；</p>
+<pre><code>sudo reboot
+</code></pre></li>
+<li><p>等待启动完毕，此时的 docker-daemon 所在虚拟机即可通过代理访问外网；</p>
+</li>
+</ol>
+<p><strong>进一步简化配置</strong></p>
+<ol>
+<li><p>将下面一句命令复制到 http-proxy-config.sh 文件，没有就新建；</p>
+<pre><code>docker-machine ssh default &apos;sudo sh -c &quot;echo &apos;export HTTP_PROXY=&quot;http://10.101.1.6:80/&quot;&apos; &gt;&gt; /var/lib/boot2docker/profile &amp;&amp; echo &apos;export HTTP_PROXY_USER=&quot;t00001&quot;&apos; &gt;&gt; /var/lib/boot2docker/profile &amp;&amp; echo &apos;export HTTP_PROXY_PASS=&quot;t00001@sso&quot;&apos; &gt;&gt; /var/lib/boot2docker/profile &amp;&amp; echo &apos;export HTTPS_PROXY=&quot;http://10.101.1.6:80/&quot;&apos; &gt;&gt; /var/lib/boot2docker/profile &amp;&amp; echo &apos;export HTTPS_PROXY_USER=&quot;t00001&quot;&apos; &gt;&gt; /var/lib/boot2docker/profile &amp;&amp; echo &apos;export HTTPS_PROXY_PASS=&quot;t00001@sso&quot;&apos; &gt;&gt; /var/lib/boot2docker/profile &amp;&amp; echo &apos;export NO_PROXY=&quot;localhost,127.0.0.1,10*,172*,192*&quot;&apos; &gt;&gt; /var/lib/boot2docker/profile &amp;&amp; reboot&quot;&apos;
+</code></pre></li>
+<li><p>将 HTTP_PROXY，HTTP_PROXY_USER，HTTP_PROXY_PASS，HTTPS_PROXY，HTTPS_PROXY_USER，HTTPS_PROXY_PASS，NO_PROXY等代理变量更改为自己的实际值；</p>
+</li>
+<li>[可选]添加其他的代理配置，注意配置的格式，不能换行；</li>
+<li>在Docker客户端命令行中执行 http-proxy-config.sh ，等待docker服务端重启完毕即可；</li>
+</ol>
+<p><strong>参考资料</strong></p>
+<ol>
+<li><a href="https://github.com/boot2docker/boot2docker#insecure-registry" target="_blank" rel="external">https://github.com/boot2docker/boot2docker#insecure-registry</a></li>
+<li><a href="https://stackoverflow.com/questions/26424338/docker-daemon-config-file-on-boot2docker-docker-machine-docker-toolbox" target="_blank" rel="external">https://stackoverflow.com/questions/26424338/docker-daemon-config-file-on-boot2docker-docker-machine-docker-toolbox</a></li>
+</ol>
 
+      
+    </div>
     
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/">Win7中使用Docker(Boot2Docker)并配置HTTP网络代理</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">well</a></p>
+        <p><span>发布时间:</span>2018-03-02, 14:00:41</p>
+        <p><span>最后更新:</span>2018-03-02, 14:28:54</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/" title="Win7中使用Docker(Boot2Docker)并配置HTTP网络代理">http://hweih.github.io/2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://hweih.github.io/2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/　　作者: well" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/01/27/关于Spring Boot中使用Jetty容器开启HTTP2的配置/">
+                    关于Spring Boot中使用Jetty容器开启HTTP2的配置
+                </a>
+            </div>
+        
     </nav>
-  
 
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+</div>
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script>
+    yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+</script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Win7中使用Docker(Boot2Docker)并配置HTTP网络代理　| well's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/" data-title="Win7中使用Docker(Boot2Docker)并配置HTTP网络代理" data-url="http://hweih.github.io/2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"well"};
+        (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';
+            ds.async = true;
+            /* 下面是我自己的 embed.js 链接，请改为你自己的地址 */
+            ds.src = 'http://hweih.github.io/js/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0]
+             || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+            // Add comment count
+            $(function(){
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=well&threads=2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/&callback=?";
+                $.getJSON(jsonUrl, function(result){
+                    $.each(result.response, function(i, field){
+                        var value = field.comments;
+                        if (value > 0) {
+                            $(".count-comment").text(value);
+                            return;
+                        }
+                    })
+                })
+            })
+        
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/01/27/关于Spring Boot中使用Jetty容器开启HTTP2的配置/" title="下一篇: 关于Spring Boot中使用Jetty容器开启HTTP2的配置">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/">Win7中使用Docker(Boot2Docker)并配置HTTP网络代理</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/27/关于Spring Boot中使用Jetty容器开启HTTP2的配置/">关于Spring Boot中使用Jetty容器开启HTTP2的配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/11/Stop-Jumping-微信跳一跳-自动化方案/">Stop-Jumping-微信跳一跳-自动化方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/29/Java类文件结构表格汇总/">Java类文件结构表格汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/29/Linux-Mint-17-3-Rosa下JDK编译/">Linux Mint 17.3 Rosa下JDK编译</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/">JBoss-eap-4.3中部署多个实例(仅供参考)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/">使用Hexo框架搭建个人博客的Summary</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/帮助手册/">Hexo采用yelee主题的建站手册</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/文章摘要2/">文章摘要2</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/文章摘要1/">文章摘要1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/26/hello/">hello</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/26/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">
