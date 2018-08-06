@@ -16,11 +16,13 @@
 
 
 <meta name="description" content="工作之余，出于对技术的爱好，也想养成编写文档的好习惯，遂腾出数天的时间来研究和捣鼓，终得“偿”所愿。念及学习之过程，顿感混乱之思绪。欲清理，故拙笔之一二，以备参考…">
+<meta name="keywords" content="建站手册">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Hexo框架搭建个人博客的Summary">
 <meta property="og:url" content="http://hweih.github.io/2016/06/29/使用Hexo框架搭建个人博客的Summary/index.html">
-<meta property="og:site_name" content="well's blog">
+<meta property="og:site_name" content="well&#39;s blog">
 <meta property="og:description" content="工作之余，出于对技术的爱好，也想养成编写文档的好习惯，遂腾出数天的时间来研究和捣鼓，终得“偿”所愿。念及学习之过程，顿感混乱之思绪。欲清理，故拙笔之一二，以备参考…">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-06-29T13:32:37.831Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Hexo框架搭建个人博客的Summary">
@@ -157,13 +159,13 @@
                 <div class="tips-box hide">
                     <div class="tips-arrow"></div>
                     <ul class="tips-inner">
-                        <li>Menu</li>
-                        <li>Tags</li>
+                        <li>菜单</li>
+                        <li>标签</li>
                         
-                        <li>Friends</li>
+                        <li>友情链接</li>
                         
                         
-                        <li>About Me</li>
+                        <li>关于我</li>
                         
                     </ul>
                 </div>
@@ -297,7 +299,7 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
       <div class="body-wrap"><article id="post-使用Hexo框架搭建个人博客的Summary" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -307,7 +309,7 @@
 </a>
 
  
-    <a href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/#comments" title="Comments">
+    <a href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
@@ -353,27 +355,27 @@
 </blockquote>
 <a id="more"></a>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
-<li><p>安装Git <a href="http://baike.baidu.com/link?url=q2K7vqCXq55cwR_wFr0Q65PprJbOdNGA7vuKbIe97lgcPctZFUN603xGb6Ilo5C8JVN9ifdsaNaHBakeEb3CrRemVFBuP-e_q4vkGVOANpK" title="Git介绍" target="_blank" rel="external">?</a></p>
+<li><p>安装Git <a href="http://baike.baidu.com/link?url=q2K7vqCXq55cwR_wFr0Q65PprJbOdNGA7vuKbIe97lgcPctZFUN603xGb6Ilo5C8JVN9ifdsaNaHBakeEb3CrRemVFBuP-e_q4vkGVOANpK" title="Git介绍" target="_blank" rel="noopener">?</a></p>
 <p> 使用 ./tools/Git/ 目录中的 Git-2.6.3-64-bit.exe 软件安装配置好Git，具体参考：</p>
 <ul>
-<li><a href="http://jingyan.baidu.com/article/90895e0fb3495f64ed6b0b50.html" title="如何在windows下安装GIT" target="_blank" rel="external">如何在windows下安装GIT</a></li>
-<li><a href="http://www.jb51.net/article/55438.htm" title="Windows系统下Git安装图解" target="_blank" rel="external">Windows系统下Git安装图解</a></li>
+<li><a href="http://jingyan.baidu.com/article/90895e0fb3495f64ed6b0b50.html" title="如何在windows下安装GIT" target="_blank" rel="noopener">如何在windows下安装GIT</a></li>
+<li><a href="http://www.jb51.net/article/55438.htm" title="Windows系统下Git安装图解" target="_blank" rel="noopener">Windows系统下Git安装图解</a></li>
 </ul>
 </li>
-<li><p>安装Node.js <a href="http://baike.baidu.com/link?url=dEE65i0ySZgY1l98IqotYwHstkQR61z-wJICadvqMl-8DFXhv_VuVUq_95VmAbV3JESZtutlhdYoYbotKbjg6a" title="Node.js" target="_blank" rel="external">?</a></p>
+<li><p>安装Node.js <a href="http://baike.baidu.com/link?url=dEE65i0ySZgY1l98IqotYwHstkQR61z-wJICadvqMl-8DFXhv_VuVUq_95VmAbV3JESZtutlhdYoYbotKbjg6a" title="Node.js" target="_blank" rel="noopener">?</a></p>
 <p> 使用 ./tools/Nodejs/ 目录中的 node-v4.4.6-x64.msi 软件安装配置好Node，具体参考：</p>
 <ul>
-<li><a href="https://nodejs.org/dist/v4.4.6/docs/api/" title="nodejs-v4.4.6-api" target="_blank" rel="external">nodejs-v4.4.6-api</a></li>
+<li><a href="https://nodejs.org/dist/v4.4.6/docs/api/" title="nodejs-v4.4.6-api" target="_blank" rel="noopener">nodejs-v4.4.6-api</a></li>
 <li><a href="./tools/Nodejs/nodejs-v4.4.6-api/all.html" title="参考本地开发手册">参考本地开发手册</a></li>
 </ul>
 </li>
-<li><p>申请GitHub在线账号 <a href="http://baike.baidu.com/link?url=B4WsVB08In3DAAbSPEKIOEiKfz-LrIJo_g6MZavIp4aBc5Xbj0-fig70Y8iQI8VhI-jy8ppvRWmQvzT8zcm7Fa" title="申请GitHub在线账号" target="_blank" rel="external">?</a></p>
-<p> <a href="http://github.com/" target="_blank" rel="external">GitHub</a>用于托管博客源码以及发布博客网站，我们也可以使用<a href="http://coding.net/" target="_blank" rel="external">Coding</a></p>
+<li><p>申请GitHub在线账号 <a href="http://baike.baidu.com/link?url=B4WsVB08In3DAAbSPEKIOEiKfz-LrIJo_g6MZavIp4aBc5Xbj0-fig70Y8iQI8VhI-jy8ppvRWmQvzT8zcm7Fa" title="申请GitHub在线账号" target="_blank" rel="noopener">?</a></p>
+<p> <a href="http://github.com/" target="_blank" rel="noopener">GitHub</a>用于托管博客源码以及发布博客网站，我们也可以使用<a href="http://coding.net/" target="_blank" rel="noopener">Coding</a></p>
 <blockquote>
-<p>PS：可以使用<a href="http://www.cnblogs.com/zhcncn/p/3731707.html" target="_blank" rel="external">HTTPS</a>协议，但最好使用<a href="http://blog.csdn.net/keyboardota/article/details/7603630" target="_blank" rel="external">SSH</a>协议，免去每次从GitHub库中同步资源时需要输入账号密码的过程</p>
+<p>PS：可以使用<a href="http://www.cnblogs.com/zhcncn/p/3731707.html" target="_blank" rel="noopener">HTTPS</a>协议，但最好使用<a href="http://blog.csdn.net/keyboardota/article/details/7603630" target="_blank" rel="noopener">SSH</a>协议，免去每次从GitHub库中同步资源时需要输入账号密码的过程</p>
 </blockquote>
 </li>
-<li><p>安装Hexo <a href="http://jingyan.baidu.com/article/a378c96093ef51b328283026.html" title="安装Hexo" target="_blank" rel="external">?</a></p>
+<li><p>安装Hexo <a href="http://jingyan.baidu.com/article/a378c96093ef51b328283026.html" title="安装Hexo" target="_blank" rel="noopener">?</a></p>
 <blockquote>
 <p>使用 <code>npm</code> 命令，如果有被“墙”的情况，请使用淘宝的NPM镜像工具：<code>npm install -g cnpm --registry=https://registry.npm.taobao.org</code>  将 <code>npm</code> 命令替换成 <code>cnpm</code> 使用</p>
 </blockquote>
@@ -383,10 +385,10 @@ npm install hexo --save    // 安装Hexo博客框架
 hexo init                 // 初始化，完毕后即可
 hexo server -g            // 生成博客静态页并启动服务，http://localhost:4000 本地访问
 </code></pre><blockquote>
-<p>PS: 推荐安装Hexo的Git插件：<a href="http://github.com/hexojs/hexo-deployer-git" target="_blank" rel="external">hexo-deployer-git</a>，<code>npm install hexo-deployer-git --save</code></p>
+<p>PS: 推荐安装Hexo的Git插件：<a href="http://github.com/hexojs/hexo-deployer-git" target="_blank" rel="noopener">hexo-deployer-git</a>，<code>npm install hexo-deployer-git --save</code></p>
 </blockquote>
 </li>
-<li><p>安装Hexo相关插件 <a href="http://hexo.io/plugins/" title="安装Hexo相关插件" target="_blank" rel="external">?</a></p>
+<li><p>安装Hexo相关插件 <a href="http://hexo.io/plugins/" title="安装Hexo相关插件" target="_blank" rel="noopener">?</a></p>
 <p> 这里给出一个<em>package.json</em>文件，内容如下：</p>
 <pre><code>{
   &quot;name&quot;: &quot;hexo-site&quot;,
@@ -418,14 +420,14 @@ hexo server -g            // 生成博客静态页并启动服务，http://local
 <p>1）新建一个文件夹，命名为blog，作为Hexo博客根目录；</p>
 <p>2）在blog文件夹下新建<em>package.json</em>文件，将上面的内容复制粘贴进去；</p>
 <p>3）命令行进入到blog目录，执行 <code>npm install</code> 命令，等待执行完毕，Hexo博客框架即可搭建完毕；</p>
-<p>4）使用 <code>hexo s -g</code> 命令，执行完毕后访问 <a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 即可本地访问预览；</p>
+<p>4）使用 <code>hexo s -g</code> 命令，执行完毕后访问 <a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 即可本地访问预览；</p>
 <p><strong>注意：能够快速搭建的前提是安装了 node.js、hexo-cli，如果不清楚，请参考<em>[2. 安装Node.js、4. 安装Hexo]</em></strong></p>
 </blockquote>
 </li>
-<li><p>Hexo个性化：安装 <a href="http://github.com/MOxFIVE/hexo-theme-yelee" title="yelee" target="_blank" rel="external">yelee</a> 主题 <a href="http://hexo.io/themes/" title="Hexo个性化：安装yelee主题" target="_blank" rel="external">?</a></p>
+<li><p>Hexo个性化：安装 <a href="http://github.com/MOxFIVE/hexo-theme-yelee" title="yelee" target="_blank" rel="noopener">yelee</a> 主题 <a href="http://hexo.io/themes/" title="Hexo个性化：安装yelee主题" target="_blank" rel="noopener">?</a></p>
 <ul>
-<li>yelee主题<a href="http://moxfive.xyz/" title="yelee主题预览" target="_blank" rel="external">预览</a></li>
-<li><p>yelee主题<a href="http://github.com/MOxFIVE/hexo-theme-yelee" title="yelee主题安装" target="_blank" rel="external">安装</a></p>
+<li>yelee主题<a href="http://moxfive.xyz/" title="yelee主题预览" target="_blank" rel="noopener">预览</a></li>
+<li><p>yelee主题<a href="http://github.com/MOxFIVE/hexo-theme-yelee" title="yelee主题安装" target="_blank" rel="noopener">安装</a></p>
 <ul>
 <li><p>1) 命令行进入Hexo博客框架根目录下，执行 </p>
 <pre><code>git clone https://github.com/MOxFIVE/hexo-theme-yelee.git themes/yelee
@@ -439,14 +441,14 @@ hexo server -g    // 生成静态博客页面并打开服务器，访问 http://
 </code></pre></li>
 </ul>
 </li>
-<li><p>yelee主题<a href="http://moxfive.coding.me/yelee/" title="yelee主题使用说明" target="_blank" rel="external">使用说明</a></p>
+<li><p>yelee主题<a href="http://moxfive.coding.me/yelee/" title="yelee主题使用说明" target="_blank" rel="noopener">使用说明</a></p>
 </li>
 </ul>
 </li>
 <li><p>参考资料</p>
 <ul>
-<li><a href="http://ibruce.info/2013/11/22/hexo-your-blog/" title="搭建你的Hexo" target="_blank" rel="external">http://ibruce.info/2013/11/22/hexo-your-blog/</a></li>
-<li><a href="http://blog.csdn.net/jzooo/article/details/46781805" title="零基础免费搭建个人博客-hexo+github" target="_blank" rel="external">http://blog.csdn.net/jzooo/article/details/46781805</a></li>
+<li><a href="http://ibruce.info/2013/11/22/hexo-your-blog/" title="搭建你的Hexo" target="_blank" rel="noopener">http://ibruce.info/2013/11/22/hexo-your-blog/</a></li>
+<li><a href="http://blog.csdn.net/jzooo/article/details/46781805" title="零基础免费搭建个人博客-hexo+github" target="_blank" rel="noopener">http://blog.csdn.net/jzooo/article/details/46781805</a></li>
 </ul>
 </li>
 </ol>
@@ -458,17 +460,17 @@ hexo server -g    // 生成静态博客页面并打开服务器，访问 http://
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/">使用Hexo框架搭建个人博客的Summary</a></p>
-        <p><span>Author:</span><a href="/" title="Back to Homepage">well</a></p>
-        <p><span>Created:</span>2016-06-29, 20:49:48</p>
-        <p><span>Updated:</span>2016-06-29, 21:32:37</p>
+        <p><span>本文标题:</span><a href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/">使用Hexo框架搭建个人博客的Summary</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">well</a></p>
+        <p><span>发布时间:</span>2016-06-29, 20:49:48</p>
+        <p><span>最后更新:</span>2016-06-29, 21:32:37</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/" title="使用Hexo框架搭建个人博客的Summary">http://hweih.github.io/2016/06/29/使用Hexo框架搭建个人博客的Summary/</a>
-            <span class="copy-path" data-clipboard-text="From http://hweih.github.io/2016/06/29/使用Hexo框架搭建个人博客的Summary/　　By well" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/" title="使用Hexo框架搭建个人博客的Summary">http://hweih.github.io/2016/06/29/使用Hexo框架搭建个人博客的Summary/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://hweih.github.io/2016/06/29/使用Hexo框架搭建个人博客的Summary/　　作者: well" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
         </p>
     </div>
 
@@ -495,7 +497,7 @@ hexo server -g    // 生成静态博客页面并打开服务器，访问 http://
 </article>
 
     <div id="toc" class="toc-article">
-    <strong class="toc-title">Contents</strong>
+    <strong class="toc-title">文章目录</strong>
     <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-number">1.</span> <span class="toc-text">步骤</span></a></li></ol>
 </div>
 <style>
@@ -505,10 +507,10 @@ hexo server -g    // 生成静态博客页面并打开服务器，访问 http://
     }
 </style>
 
-<input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
 <script>
-    yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
 </script>
 
 
@@ -614,15 +616,15 @@ hexo server -g    // 生成静态博客页面并打开服务器，访问 http://
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/" title="Pre: JBoss-eap-4.3中部署多个实例(仅供参考)">
+            <a href="/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/" title="上一篇: JBoss-eap-4.3中部署多个实例(仅供参考)">
                 <i class="fa fa-angle-left"></i>
             </a>
         
 
-        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2016/06/28/帮助手册/" title="Next: Hexo采用yelee主题的建站手册">
+            <a href="/2016/06/28/帮助手册/" title="下一篇: Hexo采用yelee主题的建站手册">
                 <i class="fa fa-angle-right"></i>
             </a>
         
@@ -645,14 +647,14 @@ hexo server -g    // 生成静态博客页面并打开服务器，访问 http://
                 2016-2018 well
             </div>
             <div class="footer-right">
-                <i class="fa fa-heart animated infinite pulse"></i> <a href="http://hweih.github.io" target="_blank" title="记录生活点滴">well's blog</a>  powered by <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo v3.5">yelee</a> <i class="fa fa-heart animated infinite pulse"></i>
+                <i class="fa fa-heart animated infinite pulse"></i> <a href="http://hweih.github.io" target="_blank" title="记录生活点滴">well's blog</a>  powered by <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题 v3.5">yelee</a> <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" >Site Visitors:
+                        <span id="site-visit" >本站到访数:
                             <span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
@@ -662,7 +664,7 @@ hexo server -g    // 生成静态博客页面并打开服务器，访问 http://
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit">Page Hits:
+                        <span id="page-visit">本页阅读量:
                             <span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
@@ -733,9 +735,9 @@ MathJax.Hub.Queue(function() {
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
