@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="well" />
+
+
+
+<meta name="description" content="转自：http://lovestblog.cn/blog/2014/06/18/jvm-attach/?spm=a2c4e.11153940.blogcont2950.6.6b1b3a547jJEu6 深入到 JVM 底层，理解从 JDK 1.6 开始完整提供的新特性： Attach API…">
+<meta name="keywords" content="工作笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM Attach 机制实现原理">
+<meta property="og:url" content="http://hweih.github.io/2018/08/29/JVM Attach 机制实现原理/index.html">
+<meta property="og:site_name" content="well&#39;s blog">
+<meta property="og:description" content="转自：http://lovestblog.cn/blog/2014/06/18/jvm-attach/?spm=a2c4e.11153940.blogcont2950.6.6b1b3a547jJEu6 深入到 JVM 底层，理解从 JDK 1.6 开始完整提供的新特性： Attach API…">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-08-29T08:44:54.548Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JVM Attach 机制实现原理">
+<meta name="twitter:description" content="转自：http://lovestblog.cn/blog/2014/06/18/jvm-attach/?spm=a2c4e.11153940.blogcont2950.6.6b1b3a547jJEu6 深入到 JVM 底层，理解从 JDK 1.6 开始完整提供的新特性： Attach API…">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="well&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>JVM Attach 机制实现原理 | well&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?c70012c047dae9445339dfc206297f68";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/well.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">well</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">一步一个脚印，一天一点进步</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">文章</a></li>
+                        
+                            <li><a href="/tags/essays">随笔</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:&#104;&#119;&#104;&#80;&#105;&#97;&#110;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="http://github.com/hweih/" title="GitHub"></a>
+                            
+                                <a class="fa 简书" href="http://www.jianshu.com/" title="简书"></a>
+                            
+                                <a class="fa 博客园" href="http://www.cnblogs.com/" title="博客园"></a>
+                            
+                                <a class="fa CSDN" href="http://www.csdn.net/" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" href="http://stackoverflow.com" title="StackOverflow"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hello/">hello</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作笔记/">工作笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/建站手册/">建站手册</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文章摘要测试/">文章摘要测试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">well</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/well.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">well</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">一步一个脚印，一天一点进步</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">文章</a></li>
+                
+                    <li><a href="/tags/essays">随笔</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:&#104;&#119;&#104;&#80;&#105;&#97;&#110;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="http://github.com/hweih/" title="GitHub"></a>
+                            
+                                <a class="fa 简书" target="_blank" href="http://www.jianshu.com/" title="简书"></a>
+                            
+                                <a class="fa 博客园" target="_blank" href="http://www.cnblogs.com/" title="博客园"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://www.csdn.net/" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" target="_blank" href="http://stackoverflow.com" title="StackOverflow"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-JVM Attach 机制实现原理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/08/29/JVM Attach 机制实现原理/" class="article-date">
+      <time datetime="2018-08-29T08:30:41.000Z" itemprop="datePublished">2018-08-29</time>
+</a>
+
+ 
+    <a href="/2018/08/29/JVM Attach 机制实现原理/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JVM Attach 机制实现原理
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工作笔记/">工作笔记</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>转自：<a href="http://lovestblog.cn/blog/2014/06/18/jvm-attach/?spm=a2c4e.11153940.blogcont2950.6.6b1b3a547jJEu6" target="_blank" rel="noopener">http://lovestblog.cn/blog/2014/06/18/jvm-attach/?spm=a2c4e.11153940.blogcont2950.6.6b1b3a547jJEu6</a> 深入到 JVM 底层，理解从 JDK 1.6 开始完整提供的新特性： Attach API…</p>
+</blockquote>
+<a id="more"></a>
+<p><strong>JVM Attach 机制实现原理</strong></p>
+<p><strong>Attach是什么</strong></p>
+<p>在讲这个之前，我们先来点大家都知道的东西，当我们感觉线程一直卡在某个地方，想知道卡在哪里，首先想到的是进行线程dump，而常用的命令是jstack ，我们就可以看到如下线程栈了：</p>
+<pre><code>2014-06-18 12:56:14
+Full thread dump Java HotSpot(TM) 64-Bit Server VM (24.51-b03 mixed mode):
+
+&quot;Attach Listener&quot; daemon prio=5 tid=0x00007fb0c6800800 nid=0x440b waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+&quot;Service Thread&quot; daemon prio=5 tid=0x00007fb0c584d800 nid=0x5303 runnable [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+&quot;C2 CompilerThread1&quot; daemon prio=5 tid=0x00007fb0c482e000 nid=0x5103 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+&quot;C2 CompilerThread0&quot; daemon prio=5 tid=0x00007fb0c482c800 nid=0x4f03 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+&quot;Signal Dispatcher&quot; daemon prio=5 tid=0x00007fb0c4815800 nid=0x4d03 runnable [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+&quot;Finalizer&quot; daemon prio=5 tid=0x00007fb0c4813800 nid=0x3903 in Object.wait() [0x00000001187d2000]
+   java.lang.Thread.State: WAITING (on object monitor)
+    at java.lang.Object.wait(Native Method)
+    - waiting on &lt;0x00000007aaa85568&gt; (a java.lang.ref.ReferenceQueue$Lock)
+    at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:135)
+    - locked &lt;0x00000007aaa85568&gt; (a java.lang.ref.ReferenceQueue$Lock)
+    at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:151)
+    at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:189)
+
+&quot;Reference Handler&quot; daemon prio=5 tid=0x00007fb0c4800000 nid=0x3703 in Object.wait() [0x00000001186cf000]
+   java.lang.Thread.State: WAITING (on object monitor)
+    at java.lang.Object.wait(Native Method)
+    - waiting on &lt;0x00000007aaa850f0&gt; (a java.lang.ref.Reference$Lock)
+    at java.lang.Object.wait(Object.java:503)
+    at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:133)
+    - locked &lt;0x00000007aaa850f0&gt; (a java.lang.ref.Reference$Lock)
+
+&quot;main&quot; prio=5 tid=0x00007fb0c5800800 nid=0x1903 waiting on condition [0x0000000107962000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+    at java.lang.Thread.sleep(Native Method)
+    at Test.main(Test.java:5)
+
+&quot;VM Thread&quot; prio=5 tid=0x00007fb0c583d800 nid=0x3503 runnable
+
+&quot;GC task thread#0 (ParallelGC)&quot; prio=5 tid=0x00007fb0c401e000 nid=0x2503 runnable
+
+&quot;GC task thread#1 (ParallelGC)&quot; prio=5 tid=0x00007fb0c401e800 nid=0x2703 runnable
+
+&quot;GC task thread#2 (ParallelGC)&quot; prio=5 tid=0x00007fb0c401f800 nid=0x2903 runnable
+
+&quot;GC task thread#3 (ParallelGC)&quot; prio=5 tid=0x00007fb0c4020000 nid=0x2b03 runnable
+
+&quot;GC task thread#4 (ParallelGC)&quot; prio=5 tid=0x00007fb0c4020800 nid=0x2d03 runnable
+
+&quot;GC task thread#5 (ParallelGC)&quot; prio=5 tid=0x00007fb0c4021000 nid=0x2f03 runnable
+
+&quot;GC task thread#6 (ParallelGC)&quot; prio=5 tid=0x00007fb0c4022000 nid=0x3103 runnable
+
+&quot;GC task thread#7 (ParallelGC)&quot; prio=5 tid=0x00007fb0c4022800 nid=0x3303 runnable
+
+&quot;VM Periodic Task Thread&quot; prio=5 tid=0x00007fb0c5845000 nid=0x5503 waiting on condition
+</code></pre><p>大家是否注意过上面圈起来的两个线程，”Attach Listener”和“Signal Dispatcher”，这两个线程是我们这次要讲的Attach机制的关键，先偷偷告诉各位，其实Attach Listener这个线程在jvm起来的时候可能并没有的，后面会细说。</p>
+<p>那Attach机制是什么？说简单点就是jvm提供一种jvm进程间通信的能力，能让一个进程传命令给另外一个进程，并让它执行内部的一些操作，比如说我们为了让另外一个jvm进程把线程dump出来，那么我们跑了一个jstack的进程，然后传了个pid的参数，告诉它要哪个进程进行线程dump，既然是两个进程，那肯定涉及到进程间通信，以及传输协议的定义，比如要执行什么操作，传了什么参数等</p>
+<p><strong>Attach能做些什么</strong></p>
+<p>总结起来说，比如内存dump，线程dump，类信息统计(比如加载的类及大小以及实例个数等)，动态加载agent(使用过btrace的应该不陌生)，动态设置vm flag(但是并不是所有的flag都可以设置的，因为有些flag是在jvm启动过程中使用的，是一次性的)，打印vm flag，获取系统属性等，这些对应的源码(AttachListener.cpp)如下：</p>
+<pre><code>static AttachOperationFunctionInfo funcs[] = {
+  { &quot;agentProperties&quot;,  get_agent_properties },
+  { &quot;datadump&quot;,         data_dump },
+  { &quot;dumpheap&quot;,         dump_heap },
+  { &quot;load&quot;,             JvmtiExport::load_agent_library },
+  { &quot;properties&quot;,       get_system_properties },
+  { &quot;threaddump&quot;,       thread_dump },
+  { &quot;inspectheap&quot;,      heap_inspection },
+  { &quot;setflag&quot;,          set_flag },
+  { &quot;printflag&quot;,        print_flag },
+  { &quot;jcmd&quot;,             jcmd },
+  { NULL,               NULL }
+};
+</code></pre><p>注意：后面是命令对应的处理函数。</p>
+<p><strong>Attach在JVM里如何实现的</strong></p>
+<ol>
+<li><p>Attach Listener线程的创建</p>
+<p> 前面也提到了，jvm在启动过程中可能并没有启动Attach Listener这个线程，可以通过jvm参数来启动，代码 （Threads::create_vm）如下：</p>
+<pre><code>if (!DisableAttachMechanism) {
+    if (StartAttachListener || AttachListener::init_at_startup()) {
+      AttachListener::init();
+    }
+}
+bool AttachListener::init_at_startup() {
+  if (ReduceSignalUsage) {
+    return true;
+  } else {
+    return false;
+  }
+}
+</code></pre><p> 其中DisableAttachMechanism，StartAttachListener ，ReduceSignalUsage均默认是false(globals.hpp)</p>
+<pre><code>product(bool, DisableAttachMechanism, false, &quot;Disable mechanism that allows tools to Attach to this VM”)   
+product(bool, StartAttachListener, false, &quot;Always start Attach Listener at VM startup&quot;)  
+product(bool, ReduceSignalUsage, false, &quot;Reduce the use of OS signals in Java and/or the VM”) 
+</code></pre><p> 因此AttachListener::init()并不会被执行，而Attach Listener线程正是在此方法里创建的</p>
+<pre><code>// Starts the Attach Listener thread
+void AttachListener::init() {
+  EXCEPTION_MARK;
+  klassOop k = SystemDictionary::resolve_or_fail(vmSymbols::java_lang_Thread(), true, CHECK);
+  instanceKlassHandle klass (THREAD, k);
+  instanceHandle thread_oop = klass-&gt;allocate_instance_handle(CHECK);
+
+  const char thread_name[] = &quot;Attach Listener&quot;;
+  Handle string = java_lang_String::create_from_str(thread_name, CHECK);
+
+  // Initialize thread_oop to put it into the system threadGroup
+  Handle thread_group (THREAD, Universe::system_thread_group());
+  JavaValue result(T_VOID);
+  JavaCalls::call_special(&amp;result, thread_oop,
+                       klass,
+                       vmSymbols::object_initializer_name(),
+                       vmSymbols::threadgroup_string_void_signature(),
+                       thread_group,
+                       string,
+                       CHECK);
+
+  KlassHandle group(THREAD, SystemDictionary::ThreadGroup_klass());
+  JavaCalls::call_special(&amp;result,
+                        thread_group,
+                        group,
+                        vmSymbols::add_method_name(),
+                        vmSymbols::thread_void_signature(),
+                        thread_oop,             // ARG 1
+                        CHECK);
+
+  { MutexLocker mu(Threads_lock);
+    JavaThread* listener_thread = new JavaThread(&amp;Attach_listener_thread_entry);
+
+    // Check that thread and osthread were created
+    if (listener_thread == NULL || listener_thread-&gt;osthread() == NULL) {
+      vm_exit_during_initialization(&quot;java.lang.OutOfMemoryError&quot;,
+                                    &quot;unable to create new native thread&quot;);
+    }
+
+    java_lang_Thread::set_thread(thread_oop(), listener_thread);
+    java_lang_Thread::set_daemon(thread_oop());
+
+    listener_thread-&gt;set_threadObj(thread_oop());
+    Threads::add(listener_thread);
+    Thread::start(listener_thread);
+  }
+}
+</code></pre><p> 既然在启动的时候不会创建这个线程，那么我们在上面看到的那个线程是怎么创建的呢，这个就要关注另外一个线程“Signal Dispatcher”了，顾名思义是处理信号的，这个线程是在jvm启动的时候就会创建的，具体代码就不说了。</p>
+<p> 下面以jstack的实现来说明触发Attach这一机制进行的过程，jstack命令的实现其实是一个叫做JStack.java的类，查看jstack代码后会走到下面的方法里</p>
+<pre><code>private static void runThreadDump(String pid, String args[]) throws Exception {
+    VirtualMachine vm = null;
+    try {
+        vm = VirtualMachine.Attach(pid);
+    } catch (Exception x) {
+        String msg = x.getMessage();
+        if (msg != null) {
+            System.err.println(pid + &quot;: &quot; + msg);
+        } else {
+            x.printStackTrace();
+        }
+        if ((x instanceof AttachNotSupportedException) &amp;&amp;
+            (loadSAClass() != null)) {
+            System.err.println(&quot;The -F option can be used when the target &quot; +
+                &quot;process is not responding&quot;);
+        }
+        System.exit(1);
+    }
+
+    // Cast to HotSpotVirtualMachine as this is implementation specific
+    // method.
+    InputStream in = ((HotSpotVirtualMachine)vm).remoteDataDump((Object[])args);
+
+    // read to EOF and just print output
+    byte b[] = new byte[256];
+    int n;
+    do {
+        n = in.read(b);
+        if (n &gt; 0) {
+            String s = new String(b, 0, n, &quot;UTF-8&quot;);
+            System.out.print(s);
+        }
+    } while (n &gt; 0);
+    in.close();
+    vm.detach();
+}
+</code></pre><p> 请注意VirtualMachine.Attach(pid);这行代码，触发Attach pid的关键，如果是在linux下会走到下面的构造函数</p>
+<pre><code>LinuxVirtualMachine(AttachProvider provider, String vmid)
+    throws AttachNotSupportedException, IOException
+{
+    super(provider, vmid);
+
+    // This provider only understands pids
+    int pid;
+    try {
+        pid = Integer.parseInt(vmid);
+    } catch (NumberFormatException x) {
+        throw new AttachNotSupportedException(&quot;Invalid process identifier&quot;);
+    }
+
+    // Find the socket file. If not found then we attempt to start the
+    // Attach mechanism in the target VM by sending it a QUIT signal.
+    // Then we attempt to find the socket file again.
+    path = findSocketFile(pid);
+    if (path == null) {
+        File f = createAttachFile(pid);
+        try {
+            // On LinuxThreads each thread is a process and we don&apos;t have the
+            // pid of the VMThread which has SIGQUIT unblocked. To workaround
+            // this we get the pid of the &quot;manager thread&quot; that is created
+            // by the first call to pthread_create. This is parent of all
+            // threads (except the initial thread).
+            if (isLinuxThreads) {
+                int mpid;
+                try {
+                    mpid = getLinuxThreadsManager(pid);
+                } catch (IOException x) {
+                    throw new AttachNotSupportedException(x.getMessage());
+                }
+                assert(mpid &gt;= 1);
+                sendQuitToChildrenOf(mpid);
+            } else {
+                sendQuitTo(pid);
+            }
+
+            // give the target VM time to start the Attach mechanism
+            int i = 0;
+            long delay = 200;
+            int retries = (int)(AttachTimeout() / delay);
+            do {
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException x) { }
+                path = findSocketFile(pid);
+                i++;
+            } while (i &lt;= retries &amp;&amp; path == null);
+            if (path == null) {
+                throw new AttachNotSupportedException(
+                    &quot;Unable to open socket file: target process not responding &quot; +
+                    &quot;or HotSpot VM not loaded&quot;);
+            }
+        } finally {
+            f.delete();
+        }
+    }
+
+    // Check that the file owner/permission to avoid Attaching to
+    // bogus process
+    checkPermissions(path);
+
+    // Check that we can connect to the process
+    // - this ensures we throw the permission denied error now rather than
+    // later when we attempt to enqueue a command.
+    int s = socket();
+    try {
+        connect(s, path);
+    } finally {
+        close(s);
+    }
+}
+</code></pre><p> 这里要解释下代码了，首先看到调用了createAttachFile方法在目标进程的cwd目录下创建了一个文件/proc//cwd/.Attach_pid，这个在后面的信号处理过程中会取出来做判断(为了安全)，另外我们知道在linux下线程是用进程实现的，在jvm启动过程中会创建很多线程，比如我们上面的信号线程，也就是会看到很多的pid(应该是LWP)，那么如何找到这个信号处理线程呢，从上面实现来看是找到我们传进去的pid的父进程，然后给它的所有子进程都发送一个SIGQUIT信号，而jvm里除了信号线程，其他线程都设置了对此信号的屏蔽，因此收不到该信号，于是该信号就传给了“Signal Dispatcher”，在传完之后作轮询等待看目标进程是否创建了某个文件，AttachTimeout默认超时时间是5000ms，可通过设置系统变量sun.tools.Attach.AttachTimeout来指定，下面是Signal Dispatcher线程的entry实现</p>
+<pre><code>static void signal_thread_entry(JavaThread* thread, TRAPS) {
+  os::set_priority(thread, NearMaxPriority);
+  while (true) {
+    int sig;
+    {
+      // FIXME : Currently we have not decieded what should be the status
+      //         for this java thread blocked here. Once we decide about
+      //         that we should fix this.
+      sig = os::signal_wait();
+    }
+    if (sig == os::sigexitnum_pd()) {
+       // Terminate the signal thread
+       return;
+    }
+
+    switch (sig) {
+      case SIGBREAK: {
+        // Check if the signal is a trigger to start the Attach Listener - in that
+        // case don&apos;t print stack traces.
+        if (!DisableAttachMechanism &amp;&amp; AttachListener::is_init_trigger()) {
+          continue;
+        }
+        // Print stack traces
+        // Any SIGBREAK operations added here should make sure to flush
+        // the output stream (e.g. tty-&gt;flush()) after output.  See 4803766.
+        // Each module also prints an extra carriage return after its output.
+        VM_PrintThreads op;
+        VMThread::execute(&amp;op);
+        VM_PrintJNI jni_op;
+        VMThread::execute(&amp;jni_op);
+        VM_FindDeadlocks op1(tty);
+        VMThread::execute(&amp;op1);
+        Universe::print_heap_at_SIGBREAK();
+        if (PrintClassHistogram) {
+          VM_GC_HeapInspection op1(gclog_or_tty, true /* force full GC before heap inspection */,
+                                   true /* need_prologue */);
+          VMThread::execute(&amp;op1);
+        }
+        if (JvmtiExport::should_post_data_dump()) {
+          JvmtiExport::post_data_dump();
+        }
+        break;
+      }
+      ….
+      }
+    }
+  }
+}
+</code></pre><p> 当信号是SIGBREAK(在jvm里做了#define，其实就是SIGQUIT)的时候，就会触发 AttachListener::is_init_trigger()的执行，</p>
+<pre><code>bool AttachListener::is_init_trigger() {
+  if (init_at_startup() || is_initialized()) {
+    return false;               // initialized at startup or already initialized
+  }
+  char fn[PATH_MAX+1];
+  sprintf(fn, &quot;.Attach_pid%d&quot;, os::current_process_id());
+  int ret;
+  struct stat64 st;
+  RESTARTABLE(::stat64(fn, &amp;st), ret);
+  if (ret == -1) {
+    snprintf(fn, sizeof(fn), &quot;%s/.Attach_pid%d&quot;,
+             os::get_temp_directory(), os::current_process_id());
+    RESTARTABLE(::stat64(fn, &amp;st), ret);
+  }
+  if (ret == 0) {
+    // simple check to avoid starting the Attach mechanism when
+    // a bogus user creates the file
+    if (st.st_uid == geteuid()) {
+      init();
+      return true;
+    }
+  }
+  return false;
+}
+</code></pre><p> 一开始会判断当前进程目录下是否有个.Attach_pid文件（前面提到了），如果没有就会在/tmp下创建一个/tmp/.Attach_pid，当那个文件的uid和自己的uid是一致的情况下（为了安全）再调用init方法</p>
+<pre><code>// Starts the Attach Listener thread
+void AttachListener::init() {
+  EXCEPTION_MARK;
+  klassOop k = SystemDictionary::resolve_or_fail(vmSymbols::java_lang_Thread(), true, CHECK);
+  instanceKlassHandle klass (THREAD, k);
+  instanceHandle thread_oop = klass-&gt;allocate_instance_handle(CHECK);
+
+  const char thread_name[] = &quot;Attach Listener&quot;;
+  Handle string = java_lang_String::create_from_str(thread_name, CHECK);
+
+  // Initialize thread_oop to put it into the system threadGroup
+  Handle thread_group (THREAD, Universe::system_thread_group());
+  JavaValue result(T_VOID);
+  JavaCalls::call_special(&amp;result, thread_oop,
+                       klass,
+                       vmSymbols::object_initializer_name(),
+                       vmSymbols::threadgroup_string_void_signature(),
+                       thread_group,
+                       string,
+                       CHECK);
+
+  KlassHandle group(THREAD, SystemDictionary::ThreadGroup_klass());
+  JavaCalls::call_special(&amp;result,
+                        thread_group,
+                        group,
+                        vmSymbols::add_method_name(),
+                        vmSymbols::thread_void_signature(),
+                        thread_oop,             // ARG 1
+                        CHECK);
+
+  { MutexLocker mu(Threads_lock);
+    JavaThread* listener_thread = new JavaThread(&amp;Attach_listener_thread_entry);
+
+    // Check that thread and osthread were created
+    if (listener_thread == NULL || listener_thread-&gt;osthread() == NULL) {
+      vm_exit_during_initialization(&quot;java.lang.OutOfMemoryError&quot;,
+                                    &quot;unable to create new native thread&quot;);
+    }
+
+    java_lang_Thread::set_thread(thread_oop(), listener_thread);
+    java_lang_Thread::set_daemon(thread_oop());
+
+    listener_thread-&gt;set_threadObj(thread_oop());
+    Threads::add(listener_thread);
+    Thread::start(listener_thread);
+  }
+}
+</code></pre><p> 此时水落石出了，看到创建了一个线程，并且取名为Attach Listener。再看看其子类LinuxAttachListener的init方法</p>
+<pre><code>int LinuxAttachListener::init() {
+  char path[UNIX_PATH_MAX];          // socket file
+  char initial_path[UNIX_PATH_MAX];  // socket file during setup
+  int listener;                      // listener socket (file descriptor)
+
+  // register function to cleanup
+  ::atexit(listener_cleanup);
+
+  int n = snprintf(path, UNIX_PATH_MAX, &quot;%s/.java_pid%d&quot;,
+                   os::get_temp_directory(), os::current_process_id());
+  if (n &lt; (int)UNIX_PATH_MAX) {
+    n = snprintf(initial_path, UNIX_PATH_MAX, &quot;%s.tmp&quot;, path);
+  }
+  if (n &gt;= (int)UNIX_PATH_MAX) {
+    return -1;
+  }
+
+  // create the listener socket
+  listener = ::socket(PF_UNIX, SOCK_STREAM, 0);
+  if (listener == -1) {
+    return -1;
+  }
+
+  // bind socket
+  struct sockaddr_un addr;
+  addr.sun_family = AF_UNIX;
+  strcpy(addr.sun_path, initial_path);
+  ::unlink(initial_path);
+  int res = ::bind(listener, (struct sockaddr*)&amp;addr, sizeof(addr));
+  if (res == -1) {
+    RESTARTABLE(::close(listener), res);
+    return -1;
+  }
+
+  // put in listen mode, set permissions, and rename into place
+  res = ::listen(listener, 5);
+  if (res == 0) {
+      RESTARTABLE(::chmod(initial_path, S_IREAD|S_IWRITE), res);
+      if (res == 0) {
+          res = ::rename(initial_path, path);
+      }
+  }
+  if (res == -1) {
+    RESTARTABLE(::close(listener), res);
+    ::unlink(initial_path);
+    return -1;
+  }
+  set_path(path);
+  set_listener(listener);
+
+  return 0;
+}
+</code></pre><p> 看到其创建了一个监听套接字，并创建了一个文件/tmp/.java_pid，这个文件就是客户端之前一直在轮询等待的文件，随着这个文件的生成，意味着Attach的过程圆满结束了。</p>
+</li>
+<li><p>Attach listener接收请求</p>
+<p> 看看它的entry实现Attach_listener_thread_entry</p>
+<pre><code>static void Attach_listener_thread_entry(JavaThread* thread, TRAPS) {
+  os::set_priority(thread, NearMaxPriority);
+
+  thread-&gt;record_stack_base_and_size();
+
+  if (AttachListener::pd_init() != 0) {
+    return;
+  }
+  AttachListener::set_initialized();
+
+  for (;;) {
+    AttachOperation* op = AttachListener::dequeue();
+    if (op == NULL) {
+      return;   // dequeue failed or shutdown
+    }
+
+    ResourceMark rm;
+    bufferedStream st;
+    jint res = JNI_OK;
+
+    // handle special detachall operation
+    if (strcmp(op-&gt;name(), AttachOperation::detachall_operation_name()) == 0) {
+      AttachListener::detachall();
+    } else {
+      // find the function to dispatch too
+      AttachOperationFunctionInfo* info = NULL;
+      for (int i=0; funcs[i].name != NULL; i++) {
+        const char* name = funcs[i].name;
+        assert(strlen(name) &lt;= AttachOperation::name_length_max, &quot;operation &lt;= name_length_max&quot;);
+        if (strcmp(op-&gt;name(), name) == 0) {
+          info = &amp;(funcs[i]);
+          break;
+        }
+      }
+
+      // check for platform dependent Attach operation
+      if (info == NULL) {
+        info = AttachListener::pd_find_operation(op-&gt;name());
+      }
+
+      if (info != NULL) {
+        // dispatch to the function that implements this operation
+        res = (info-&gt;func)(op, &amp;st);
+      } else {
+        st.print(&quot;Operation %s not recognized!&quot;, op-&gt;name());
+        res = JNI_ERR;
+      }
+    }
+
+    // operation complete - send result and output to client
+    op-&gt;complete(res, &amp;st);
+  }
+}
+</code></pre><p> 从代码来看就是从队列里不断取AttachOperation，然后找到请求命令对应的方法进行执行，比如我们一开始说的jstack命令，找到 { “threaddump”, thread_dump }的映射关系，然后执行thread_dump方法  </p>
+<p> 再来看看其要调用的AttachListener::dequeue()，</p>
+<pre><code>AttachOperation* AttachListener::dequeue() {
+  JavaThread* thread = JavaThread::current();
+  ThreadBlockInVM tbivm(thread);
+
+  thread-&gt;set_suspend_equivalent();
+  // cleared by handle_special_suspend_equivalent_condition() or
+  // java_suspend_self() via check_and_wait_while_suspended()
+
+  AttachOperation* op = LinuxAttachListener::dequeue();
+
+  // were we externally suspended while we were waiting?
+  thread-&gt;check_and_wait_while_suspended();
+
+  return op;
+}
+</code></pre><p> 最终调用的是LinuxAttachListener::dequeue()，</p>
+<pre><code>LinuxAttachOperation* LinuxAttachListener::dequeue() {
+  for (;;) {
+    int s;
+
+    // wait for client to connect
+    struct sockaddr addr;
+    socklen_t len = sizeof(addr);
+    RESTARTABLE(::accept(listener(), &amp;addr, &amp;len), s);
+    if (s == -1) {
+      return NULL;      // log a warning?
+    }
+
+    // get the credentials of the peer and check the effective uid/guid
+    // - check with jeff on this.
+    struct ucred cred_info;
+    socklen_t optlen = sizeof(cred_info);
+    if (::getsockopt(s, SOL_SOCKET, SO_PEERCRED, (void*)&amp;cred_info, &amp;optlen) == -1) {
+      int res;
+      RESTARTABLE(::close(s), res);
+      continue;
+    }
+    uid_t euid = geteuid();
+    gid_t egid = getegid();
+
+    if (cred_info.uid != euid || cred_info.gid != egid) {
+      int res;
+      RESTARTABLE(::close(s), res);
+      continue;
+    }
+
+    // peer credential look okay so we read the request
+    LinuxAttachOperation* op = read_request(s);
+    if (op == NULL) {
+      int res;
+      RESTARTABLE(::close(s), res);
+      continue;
+    } else {
+      return op;
+    }
+  }
+}
+</code></pre><p> 我们看到如果没有请求的话，会一直accept在那里，当来了请求，然后就会创建一个套接字，并读取数据，构建出LinuxAttachOperation返回并执行。</p>
+<p> 整个过程就这样了，从Attach线程创建到接收请求，处理请求。</p>
+</li>
+</ol>
+<p><strong>参考资料</strong></p>
+<ol>
+<li><a href="http://lovestblog.cn/blog/2014/06/18/jvm-attach/?spm=a2c4e.11153940.blogcont2950.6.6b1b3a547jJEu6" target="_blank" rel="noopener">http://lovestblog.cn/blog/2014/06/18/jvm-attach/?spm=a2c4e.11153940.blogcont2950.6.6b1b3a547jJEu6</a></li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/08/29/JVM Attach 机制实现原理/">JVM Attach 机制实现原理</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">well</a></p>
+        <p><span>发布时间:</span>2018-08-29, 16:30:41</p>
+        <p><span>最后更新:</span>2018-08-29, 16:44:54</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/08/29/JVM Attach 机制实现原理/" title="JVM Attach 机制实现原理">http://hweih.github.io/2018/08/29/JVM Attach 机制实现原理/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://hweih.github.io/2018/08/29/JVM Attach 机制实现原理/　　作者: well" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/08/29/一个 Full GC 频繁的例子/">
+                    一个 Full GC 频繁的例子
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+</div>
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script>
+    yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+</script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"JVM Attach 机制实现原理　| well's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2018/08/29/JVM Attach 机制实现原理/" data-title="JVM Attach 机制实现原理" data-url="http://hweih.github.io/2018/08/29/JVM Attach 机制实现原理/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"well"};
+        (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';
+            ds.async = true;
+            /* 下面是我自己的 embed.js 链接，请改为你自己的地址 */
+            ds.src = 'http://hweih.github.io/js/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0]
+             || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+            // Add comment count
+            $(function(){
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=well&threads=2018/08/29/JVM Attach 机制实现原理/&callback=?";
+                $.getJSON(jsonUrl, function(result){
+                    $.each(result.response, function(i, field){
+                        var value = field.comments;
+                        if (value > 0) {
+                            $(".count-comment").text(value);
+                            return;
+                        }
+                    })
+                })
+            })
+        
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/08/29/一个 Full GC 频繁的例子/" title="下一篇: 一个 Full GC 频繁的例子">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/08/29/JVM Attach 机制实现原理/">JVM Attach 机制实现原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/29/一个 Full GC 频繁的例子/">一个 Full GC 频繁的例子</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/06/彩虹表/">彩虹表</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/">Win7中使用Docker(Boot2Docker)并配置HTTP网络代理</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/27/关于Spring Boot中使用Jetty容器开启HTTP2的配置/">关于Spring Boot中使用Jetty容器开启HTTP2的配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/11/Stop-Jumping-微信跳一跳-自动化方案/">Stop-Jumping-微信跳一跳-自动化方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/29/Java类文件结构表格汇总/">Java类文件结构表格汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/29/Linux-Mint-17-3-Rosa下JDK编译/">Linux Mint 17.3 Rosa下JDK编译</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/">JBoss-eap-4.3中部署多个实例(仅供参考)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/">使用Hexo框架搭建个人博客的Summary</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/帮助手册/">Hexo采用yelee主题的建站手册</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/文章摘要2/">文章摘要2</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/文章摘要1/">文章摘要1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/26/hello/">hello</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/26/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i>
+                2016-2018 well
+            </div>
+            <div class="footer-right">
+                <i class="fa fa-heart animated infinite pulse"></i> <a href="http://hweih.github.io" target="_blank" title="记录生活点滴">well's blog</a>  powered by <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题 v3.5">yelee</a> <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站到访数:
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量:
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+    <script src="/js/GithubRepoWidget.js"></script>
+
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-80007971-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+             github: ".github-widget a", 
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

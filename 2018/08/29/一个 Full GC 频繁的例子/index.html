@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="well" />
+
+
+
+<meta name="description" content="转自：http://blog.bluedavy.com/?p=290 前两天碰到一个很诡异的GC频繁的现象，走了不少弯路，N种方法查找后才终于查明原因了，在这篇blog中记录下，以便以后碰到这类问题时能更快的解决。">
+<meta name="keywords" content="工作笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个 Full GC 频繁的例子">
+<meta property="og:url" content="http://hweih.github.io/2018/08/29/一个 Full GC 频繁的例子/index.html">
+<meta property="og:site_name" content="well&#39;s blog">
+<meta property="og:description" content="转自：http://blog.bluedavy.com/?p=290 前两天碰到一个很诡异的GC频繁的现象，走了不少弯路，N种方法查找后才终于查明原因了，在这篇blog中记录下，以便以后碰到这类问题时能更快的解决。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-08-29T08:28:50.948Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个 Full GC 频繁的例子">
+<meta name="twitter:description" content="转自：http://blog.bluedavy.com/?p=290 前两天碰到一个很诡异的GC频繁的现象，走了不少弯路，N种方法查找后才终于查明原因了，在这篇blog中记录下，以便以后碰到这类问题时能更快的解决。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="well&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>一个 Full GC 频繁的例子 | well&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?c70012c047dae9445339dfc206297f68";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/well.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">well</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">一步一个脚印，一天一点进步</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">文章</a></li>
+                        
+                            <li><a href="/tags/essays">随笔</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:&#104;&#119;&#104;&#80;&#105;&#97;&#110;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="http://github.com/hweih/" title="GitHub"></a>
+                            
+                                <a class="fa 简书" href="http://www.jianshu.com/" title="简书"></a>
+                            
+                                <a class="fa 博客园" href="http://www.cnblogs.com/" title="博客园"></a>
+                            
+                                <a class="fa CSDN" href="http://www.csdn.net/" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" href="http://stackoverflow.com" title="StackOverflow"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hello/">hello</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作笔记/">工作笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/建站手册/">建站手册</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文章摘要测试/">文章摘要测试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">well</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/well.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">well</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">一步一个脚印，一天一点进步</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">文章</a></li>
+                
+                    <li><a href="/tags/essays">随笔</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:&#104;&#119;&#104;&#80;&#105;&#97;&#110;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="http://github.com/hweih/" title="GitHub"></a>
+                            
+                                <a class="fa 简书" target="_blank" href="http://www.jianshu.com/" title="简书"></a>
+                            
+                                <a class="fa 博客园" target="_blank" href="http://www.cnblogs.com/" title="博客园"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://www.csdn.net/" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" target="_blank" href="http://stackoverflow.com" title="StackOverflow"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-一个 Full GC 频繁的例子" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/08/29/一个 Full GC 频繁的例子/" class="article-date">
+      <time datetime="2018-08-29T08:00:00.000Z" itemprop="datePublished">2018-08-29</time>
+</a>
+
+ 
+    <a href="/2018/08/29/一个 Full GC 频繁的例子/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一个 Full GC 频繁的例子
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工作笔记/">工作笔记</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>转自：<a href="http://blog.bluedavy.com/?p=290" target="_blank" rel="noopener">http://blog.bluedavy.com/?p=290</a></p>
+<p>前两天碰到一个很诡异的GC频繁的现象，走了不少弯路，N种方法查找后才终于查明原因了，在这篇blog中记录下，以便以后碰到这类问题时能更快的解决。</p>
+</blockquote>
+<a id="more"></a>
+<p><strong>一个 Full GC 频繁的例子</strong></p>
+<p>前两天一位同学找到我，说有个应用在启动后就一直Full GC，拿到GC log先看了下，确实是非常的诡异，截取的部分log如下：</p>
+<pre><code>2011-07-16T14:55:57.733+0800: 174042.063: [Full GC [PSYoungGen: 786432K-&gt;0K(917504K)] [ParOldGen: 728400K-&gt;728457K(1048576K)] 1514832K-&gt;728457K(1966080K) [PSPermGen: 84814K-&gt;84812K(262144K)], 1.5426550 secs] [Times: user=4.58 sys=0.21, real=1.54 secs]
+2011-07-16T14:56:07.144+0800: 174051.475: [Full GC [PSYoungGen: 786432K-&gt;0K(917504K)] [ParOldGen: 728457K-&gt;728611K(1048576K)] 1514889K-&gt;728611K(1966080K) [PSPermGen: 84814K-&gt;84812K(262144K)], 1.5428850 secs] [Times: user=4.57 sys=0.17, real=1.54 secs]
+2011-07-16T14:56:16.699+0800: 174061.030: [Full GC [PSYoungGen: 786432K-&gt;0K(917504K)] [ParOldGen: 728611K-&gt;729096K(1048576K)] 1515043K-&gt;729096K(1966080K) [PSPermGen: 84814K-&gt;84812K(262144K)], 1.5064200 secs] [Times: user=4.36 sys=0.21, real=1.50 secs]
+2011-07-16T14:56:26.420+0800: 174070.750: [Full GC [PSYoungGen: 786432K-&gt;0K(917504K)] [ParOldGen: 729096K-&gt;729654K(1048576K)] 1515528K-&gt;729654K(1966080K) [PSPermGen: 84814K-&gt;84812K(262144K)], 1.5519220 secs] [Times: user=4.47 sys=0.18, real=1.54 secs]
+2011-07-16T14:56:35.634+0800: 174079.965: [Full GC [PSYoungGen: 786432K-&gt;0K(917504K)] [ParOldGen: 729654K-&gt;728743K(1048576K)] 1516086K-&gt;728743K(1966080K) [PSPermGen: 84814K-&gt;84812K(262144K)], 1.5002720 secs] [Times: user=4.67 sys=0.11, real=1.50 secs]
+2011-07-16T14:56:45.938+0800: 174090.269: [Full GC [PSYoungGen: 786432K-&gt;0K(917504K)] [ParOldGen: 728743K-&gt;729132K(1048576K)] 1515175K-&gt;729132K(1966080K) [PSPermGen: 84814K-&gt;84812K(262144K)], 1.6175360 secs] [Times: user=4.47 sys=0.25, real=1.61 secs]
+2011-07-16T14:56:55.682+0800: 174100.012: [Full GC [PSYoungGen: 786432K-&gt;0K(917504K)] [ParOldGen: 729132K-&gt;728950K(1048576K)] 1515564K-&gt;728950K(1966080K) [PSPermGen: 84814K-&gt;84812K(262144K)], 1.5780950 secs] [Times: user=4.50 sys=0.07, real=1.58 secs]
+2011-07-16T14:57:05.228+0800: 174109.559: [Full GC [PSYoungGen: 786408K-&gt;0K(917504K)] [ParOldGen: 728950K-&gt;729466K(1048576K)] 1515359K-&gt;729466K(1966080K) [PSPermGen: 84814K-&gt;84812K(262144K)], 1.5868130 secs] [Times: user=4.43 sys=0.09, real=1.60 secs]
+2011-07-16T14:57:14.812+0800: 174119.142: [Full GC [PSYoungGen: 786432K-&gt;0K(917504K)] [ParOldGen: 729466K-&gt;729277K(1048576K)] 1515898K-&gt;729277K(1966080K) [PSPermGen: 84814K-&gt;84812K(262144K)], 1.5460140 secs] [Times: user=4.44 sys=0.19, real=1.54 secs]
+</code></pre><p>这个日志中诡异的地方在于每次Full GC的时候旧生代都还有很多的空间，于是去看来下启动参数，此时的启动参数如下：</p>
+<pre><code>-Xmx2048m -Xms2048m -Xmn1024m -Xss512k -XX:PermSize=256m -XX:+UseParallelGC -XX:ParallelGCThreads=20 -XX:+UseParallelOldGC -XX:MaxGCPauseMillis=100 -XX:+UseAdaptiveSizePolicy -XX:+DisableExplicitGC
+</code></pre><p>可以看到，这个启动参数有很多的问题，最重要的在于MaxGCPauseMillis，因为目前版本的jdk其实很难做到达成这个目标，于是猜测可能是这个参数造成的，顺带把启动参数简单修改了下：</p>
+<pre><code>-Xmx2g -Xms2g -Xmn1g -Xss512k -XX:PermSize=256m -XX:+UseParallelOldGC -XX:+DisableExplicitGC
+</code></pre><p>修改完毕，重新启动了一台，发现OK了，于是认为就是这个参数造成的，可惜的是后面又重启了几次后，还是出现了GC频繁的现象。</p>
+<p>从GC日志来看，Full GC是在旧生代没满的情况下就频繁触发，以前有碰到过一个现象是代码中死循环，导致会GC频繁，于是先 <code>jmap -histo [pid]</code> 看了下，char数组占用的比较多一些，但也是正常现象。还有可能是程序中有地方在分配巨大的对象，导致新生代放不下，旧生代剩余的空间也放不下，于是想通过jstack先看看程序现在在干嘛，于是jstack了很多次程序的状况，杯具的是什么异常状况都没发现。</p>
+<p>既然 jstack 中无法发现，于是决定通过 pstack 来看看c堆栈上的 allocate 的状况，想从此来关联到java的线程堆栈，多次执行 <code>pstack [pid] | grep &#39;allocate&#39;</code> 后，看到了一些信息：</p>
+<pre><code>11284-#8 0x000000329b8d3c2d in clone () from /lib64/libc.so.6
+11341-Thread 259 (Thread 0x40b25940 (LWP 20346)):
+11385-#0 0x000000329c40ab99 in pthread_cond_wait@@GLIBC_2.3.2 ()
+11445-#1 0x00002b57b7843727 in os::PlatformEvent::park ()
+11498-#2 0x00002b57b781c7c2 in Monitor::IWait ()
+11542-#3 0x00002b57b781cf8e in Monitor::wait ()
+11585-#4 0x00002b57b75e6aa2 in WaitForBarrierGCTask::wait_for ()
+11645-#5 0x00002b57b7887d8b in PSParallelCompact::marking_phase ()
+11707-#6 0x00002b57b7886e11 in PSParallelCompact::invoke_no_policy ()
+11772-#7 0x00002b57b788d296 in PSScavenge::invoke ()
+11820:#8 0x00002b57b7855d7e in ParallelScavengeHeap::failed_mem_allocate ()
+11891-#9 0x00002b57b796b379 in VM_ParallelGCFailedAllocation::doit ()
+11956-#10 0x00002b57b7977d0a in VM_Operation::evaluate ()
+12008-#11 0x00002b57b79772b2 in VMThread::evaluate_operation ()
+12066-#12 0x00002b57b7977534 in VMThread::loop ()
+12110-#13 0x00002b57b797702e in VMThread::run ()
+12153-#14 0x00002b57b7843f9f in java_start ()
+12193-#15 0x000000329c4064a7 in start_thread () from /lib64/libpthread.so.0
+12263-#16 0x000000329b8d3c2d in clone () from /lib64/libc.so.6
+12320-Thread 258 (Thread 0x40ba6940 (LWP 20347)):
+12364-#0 0x000000329c40ab99 in pthread_cond_wait@@GLIBC_2.3.2 ()
+–
+69798-#3 0x00002b57b78f56c3 in ObjectSynchronizer::wait ()
+69852-#4 0x00002b57b76bd34b in JVM_MonitorWait ()
+69897-#5 0x00002aaaab141ece in ?? ()
+69929-#6 0×0000000000000000 in ?? ()
+69961-Thread 141 (Thread 0x45f27940 (LWP 20532)):
+70005-#0 0x000000329c40ab99 in pthread_cond_wait@@GLIBC_2.3.2 ()
+70065-#1 0x00002b57b7843727 in os::PlatformEvent::park ()
+70118-#2 0x00002b57b781c7c2 in Monitor::IWait ()
+70162-#3 0x00002b57b781ce2a in Monitor::wait ()
+70205-#4 0x00002b57b7977b39 in VMThread::execute ()
+70252:#5 0x00002b57b7855c0b in ParallelScavengeHeap::mem_allocate ()
+70316:#6 0x00002b57b747873b in CollectedHeap::common_mem_allocate_noinit ()
+70387-#7 0x00002b57b7626ce2 in instanceKlass::allocate_instance ()
+70449-#8 0x00002b57b78aa076 in OptoRuntime::new_instance_C ()
+70506-#9 0x00002aaaab1948fb in ?? ()
+70538-#10 0x00002aaac0741768 in ?? ()
+70570-#11 0x00002aaaab761a0c in ?? ()
+70602-#12 0x00002aab2dae03c8 in ?? ()
+70634-#13 0x00002aaac4035fb0 in ?? ()
+70666-#14 0x00002aab2dae2c00 in ?? ()
+70698-#15 0x00002aaac0218af0 in ?? ()
+70730-#16 0×0000000000000001 in ?? ()
+</code></pre><p>拿到这个堆栈后，猜测是由于该线程在分配一个对象时分配失败，导致触发了Full GC，于是根据线程ID去找 jstack 中的信息，很杯具的是由于有时间差，每次都抓不到什么信息。于是仔细的重新看上面的堆栈，发现在 <code>ParallelScavengeHeap::mem_allocate</code> 后，进入了 <code>VMThread::execute</code>，根据 ParallelScavengeHeap 的代码：</p>
+<pre><code>// Generate a VM operation
+VM_ParallelGCFailedAllocation op(size, is_tlab, gc_count);
+VMThread::execute(&amp;op);
+</code></pre><p>在分配失败时，会通过VMThread来执行 <code>failed_mem_allocate</code>，这和堆栈信息也对应上了，于是继续看上面的堆栈信息，最关键的是这几段：</p>
+<pre><code>11707-#6 0x00002b57b7886e11 in PSParallelCompact::invoke_no_policy ()
+11772-#7 0x00002b57b788d296 in PSScavenge::invoke ()
+11820:#8 0x00002b57b7855d7e in ParallelScavengeHeap::failed_mem_allocate ()
+11891-#9 0x00002b57b796b379 in VM_ParallelGCFailedAllocation::doit ()
+</code></pre><p>根据这个堆栈来看，<code>ParallelScavengeHeap::failed_mem_allocate</code> 调到了 <code>PSScavenge::invoke()</code>，这个动作是用于执行新生代回收的，但诡异的是这个堆栈上 <code>PSScavenge::invoke</code> 后，竟然进入了 PSParallelCompact 代码，也就是 Full GC，这也就说明并不是应用分配了一个巨大的对象，而是正常的 Young GC 的触发（其实这个从jstat中就证明了，只是当时太不细心了），到这一步了，那么关键的问题就是为什么在触发YGC的时候，变成了直接触发 Full GC，从代码上来看如下：</p>
+<pre><code>bool scavenge_was_done = PSScavenge::invoke_no_policy();
+
+PSGCAdaptivePolicyCounters* counters = heap-&gt;gc_policy_counters();
+if (UsePerfData)
+counters-&gt;update_full_follows_scavenge(0);
+if (!scavenge_was_done ||
+    policy-&gt;should_full_GC(heap-&gt;old_gen()-&gt;free_in_bytes())) {
+    if (UsePerfData)
+        counters-&gt;update_full_follows_scavenge(full_follows_scavenge);
+
+    GCCauseSetter gccs(heap, GCCause::_adaptive_size_policy);
+    if (UseParallelOldGC) {
+        PSParallelCompact::invoke_no_policy(false);
+    } else {
+        PSMarkSweep::invoke_no_policy(false);
+    }
+}
+</code></pre><p>从上面代码来看，只有 <code>scavenge_was_done</code> 为 false 或 <code>policy-&gt;should_full_GC(heap-&gt;old_gen()-&gt;free_in_bytes())</code> 为 true 时，才会触发 PSParallelCompact，而从GC日志来看，是没有触发YGC的，于是继续看 <code>PSScavenge::invoke_no_policy</code> 代码，从代码来看，只有在下面的代码已经返回的情况下，才会没有任何YGC的日志信息：</p>
+<pre><code>// Check for potential problems.
+if (!should_attempt_scavenge()) {
+    return false;
+}
+</code></pre><p>而 <code>should_attempt_scavenge</code> 这段代码中最关键的部分如下：</p>
+<pre><code>size_t avg_promoted = (size_t) policy-&gt;padded_average_promoted_in_bytes();
+size_t promotion_estimate = MIN2(avg_promoted, young_gen-&gt;used_in_bytes());
+bool result = promotion_estimate &lt; old_gen-&gt;free_in_bytes();
+</code></pre><p>这也就是常说的GC悲观策略了，也就是说旧生代剩余的空间小于了YGC平均晋升的大小，在GC频繁时，可以看到旧生代剩余还有300多M，觉得这不太可能呀，不过还是决定通过jstat来看看到底怎么样，于是，执行 <code>jstat -J-Djstat.showUnsupported=true -snap [pid]</code>，截取部分最重要的信息如下：</p>
+<pre><code>sun.gc.generation.1.name=”old”
+sun.gc.generation.1.space.0.capacity=1073741824
+sun.gc.generation.1.space.0.initCapacity=1073741824
+sun.gc.generation.1.space.0.maxCapacity=1073741824
+sun.gc.generation.1.space.0.name=”old”
+sun.gc.generation.1.space.0.used=744389904
+
+sun.gc.policy.avgBaseFootprint=355284672
+sun.gc.policy.avgMajorIntervalTime=9105
+sun.gc.policy.avgMajorPauseTime=1640
+sun.gc.policy.avgMinorIntervalTime=5171
+sun.gc.policy.avgMinorPauseTime=330
+sun.gc.policy.avgOldLive=744361216
+sun.gc.policy.avgPretenuredPaddedAvg=251
+sun.gc.policy.avgPromotedAvg=178848128
+sun.gc.policy.avgPromotedDev=106732344
+sun.gc.policy.avgPromotedPaddedAvg=499045152
+</code></pre><p>悲观策略检查的其实就是 avgPromotedPaddedAvg &lt; space.0.capacity - space.0.used。于是原因终于清楚了，由于平均晋升的大小一直 &gt; 旧生代的剩余空间（因为每次FGC后旧生代都只有300多M是空余的，这个在这个应用中是正常的），导致每次YGC的时候悲观策略一直触发，于是看到的就是频繁Full GC了，在这个应用中的解决方法比较简单，就是把旧生代放大一点，避免这个现象，例如：<code>-Xms3g -Xmx3g</code>。</p>
+<p>可能有同学要关心为什么平均晋升大小会那么大，重启了个别机器，看到刚重启时的gc log如下：</p>
+<pre><code>2011-07-17T10:59:03.481+0800: 10.160: [GC [PSYoungGen: 786432K-&gt;23851K(917504K)] 786432K-&gt;23851K(3014656K), 0.0967130 secs] [Times: user=0.08 sys=0.03, real=0.09 secs]
+2011-07-17T10:59:12.633+0800: 19.312: [GC [PSYoungGen: 810283K-&gt;64502K(917504K)] 810283K-&gt;64502K(3014656K), 0.0728670 secs] [Times: user=0.17 sys=0.06, real=0.07 secs]
+2011-07-17T10:59:16.286+0800: 22.965: [GC [PSYoungGen: 850934K-&gt;131064K(917504K)] 850934K-&gt;284737K(3014656K), 0.3072120 secs] [Times: user=0.91 sys=0.29, real=0.31 secs]
+2011-07-17T10:59:19.405+0800: 26.084: [GC [PSYoungGen: 917496K-&gt;131047K(917504K)] 1071169K-&gt;606647K(3014656K), 0.5184690 secs] [Times: user=1.73 sys=0.32, real=0.52 secs]
+2011-07-17T10:59:21.590+0800: 28.268: [GC [PSYoungGen: 917479K-&gt;131048K(917504K)] 1393079K-&gt;1019546K(3014656K), 0.5787500 secs] [Times: user=1.78 sys=0.38, real=0.58 secs]
+</code></pre><p>可以看到，这几次YGC后的平均晋升大小就是：310m+，因此如果此时旧生代只剩 300m 了，那么就会导致下一次YGC变成FGC，而如果下一次FGC后旧生代剩余的仍然是 300m，那么就开始频繁的FGC了，在这个应用中这个现象比较正常的原因是需要cache一个700多m的东西。<br>为什么把旧生代空间放大点就能好呢？因为在这个应用中，只是因为刚启动的时候需要加载如此大的cache，所以其实后面随着YGC的进行，这个平均晋升大小会越来越小，另外一个调整了参数的，运行了一天后，平均晋升大小的值为：<code>sun.gc.policy.avgPromotedPaddedAvg=403000</code></p>
+<p>总结来看，这次排查过程还是绕了很多弯路，其实一开始就应该通过pstack来看，Full GC 是什么地方在触发，然后反推就会更快的查出问题了。</p>
+<p>从这个Case来看，对于需要Cache比较多内容的场景而言（尤其是启动时既要加载的），还是要给 Old 留有一定的空间，否则悲观策略就要发威了，:)。</p>
+<p><strong>参考资料</strong></p>
+<ol>
+<li><a href="https://blog.csdn.net/xeseo/article/details/11925375" target="_blank" rel="noopener">https://blog.csdn.net/xeseo/article/details/11925375</a></li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/08/29/一个 Full GC 频繁的例子/">一个 Full GC 频繁的例子</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">well</a></p>
+        <p><span>发布时间:</span>2018-08-29, 16:00:00</p>
+        <p><span>最后更新:</span>2018-08-29, 16:28:50</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/08/29/一个 Full GC 频繁的例子/" title="一个 Full GC 频繁的例子">http://hweih.github.io/2018/08/29/一个 Full GC 频繁的例子/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://hweih.github.io/2018/08/29/一个 Full GC 频繁的例子/　　作者: well" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/08/29/JVM Attach 机制实现原理/">
+                    JVM Attach 机制实现原理
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/08/06/彩虹表/">
+                    彩虹表
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+</div>
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script>
+    yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+</script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"一个 Full GC 频繁的例子　| well's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2018/08/29/一个 Full GC 频繁的例子/" data-title="一个 Full GC 频繁的例子" data-url="http://hweih.github.io/2018/08/29/一个 Full GC 频繁的例子/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"well"};
+        (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';
+            ds.async = true;
+            /* 下面是我自己的 embed.js 链接，请改为你自己的地址 */
+            ds.src = 'http://hweih.github.io/js/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0]
+             || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+            // Add comment count
+            $(function(){
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=well&threads=2018/08/29/一个 Full GC 频繁的例子/&callback=?";
+                $.getJSON(jsonUrl, function(result){
+                    $.each(result.response, function(i, field){
+                        var value = field.comments;
+                        if (value > 0) {
+                            $(".count-comment").text(value);
+                            return;
+                        }
+                    })
+                })
+            })
+        
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/08/29/JVM Attach 机制实现原理/" title="上一篇: JVM Attach 机制实现原理">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/08/06/彩虹表/" title="下一篇: 彩虹表">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/08/29/JVM Attach 机制实现原理/">JVM Attach 机制实现原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/29/一个 Full GC 频繁的例子/">一个 Full GC 频繁的例子</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/06/彩虹表/">彩虹表</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/02/Win7中使用Docker(Boot2Docker)并配置HTTP网络代理/">Win7中使用Docker(Boot2Docker)并配置HTTP网络代理</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/27/关于Spring Boot中使用Jetty容器开启HTTP2的配置/">关于Spring Boot中使用Jetty容器开启HTTP2的配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/11/Stop-Jumping-微信跳一跳-自动化方案/">Stop-Jumping-微信跳一跳-自动化方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/29/Java类文件结构表格汇总/">Java类文件结构表格汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/29/Linux-Mint-17-3-Rosa下JDK编译/">Linux Mint 17.3 Rosa下JDK编译</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/18/JBoss-eap-4-3中部署多个实例-仅供参考/">JBoss-eap-4.3中部署多个实例(仅供参考)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/29/使用Hexo框架搭建个人博客的Summary/">使用Hexo框架搭建个人博客的Summary</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/帮助手册/">Hexo采用yelee主题的建站手册</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/文章摘要2/">文章摘要2</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/28/文章摘要1/">文章摘要1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/26/hello/">hello</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/26/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i>
+                2016-2018 well
+            </div>
+            <div class="footer-right">
+                <i class="fa fa-heart animated infinite pulse"></i> <a href="http://hweih.github.io" target="_blank" title="记录生活点滴">well's blog</a>  powered by <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题 v3.5">yelee</a> <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站到访数:
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量:
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+    <script src="/js/GithubRepoWidget.js"></script>
+
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-80007971-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+             github: ".github-widget a", 
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
